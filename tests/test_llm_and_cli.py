@@ -101,6 +101,7 @@ def test_grounding_filter_removes_contradictory_and_unsupported_model_claims(tmp
         "execution_walkthrough": [
             "Run the taskboard command after installation.",
             "Install the project using pip -m pip install -e .[test].",
+            "Install the project with python -m pip install -e .[test].",
         ],
         "notable_designs": [
             "The src directory includes __init__.py, app.py, and cli.py files.",
@@ -147,7 +148,7 @@ def test_grounding_filter_removes_contradictory_and_unsupported_model_claims(tmp
     assert filtered["execution_walkthrough"] == ["Run the taskboard command after installation."]
     assert filtered["notable_designs"] == []
     assert [item["title"] for item in filtered["contributions"]] == ["Add a focused edge-case test"]
-    assert len(filtered["_grounding_warnings"]) == 8
+    assert len(filtered["_grounding_warnings"]) == 9
 
 
 def test_grounding_filter_rejects_a_direct_symbol_file_mismatch(tmp_path: Path) -> None:
