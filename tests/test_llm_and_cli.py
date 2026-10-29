@@ -22,9 +22,10 @@ def test_context_is_bounded_and_does_not_include_env(tmp_path: Path) -> None:
     assert ".env" not in context
     assert "very-secret-string-value" not in context
     (tmp_path / "src" / "taskboard").mkdir(parents=True, exist_ok=True)
-    (tmp_path / "src" / "taskboard" / "app.py").write_text("def summarize_tasks(items):\\n    return len(items)\\n", encoding="utf-8")
+    (tmp_path / "src" / "taskboard" / "app.py").write_text("def summarize_tasks(items):\n    return len(items)\n", encoding="utf-8")
     indexed = build_inventory(tmp_path)
     indexed_context = build_context(indexed)
+    assert "Readable file count: 2" in indexed_context
     assert "function summarize_tasks at src/taskboard/app.py:1-2" in indexed_context
 
 

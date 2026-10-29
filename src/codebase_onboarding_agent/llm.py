@@ -83,7 +83,7 @@ def build_context(inventory: Inventory) -> str:
     if inventory.test_files:
         facts.append("Likely test paths (not run by the analyzer):")
         facts.extend(f"- {path}" for path in inventory.test_files[:60])
-    return "\\n".join(facts) + "\\n\\n" + "\\n".join(chunks)
+    return "\n".join(facts) + "\n\n" + "\n".join(chunks)
 
 
 def _extract_json(content: str) -> dict[str, Any]:
