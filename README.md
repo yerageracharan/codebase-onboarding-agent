@@ -43,12 +43,11 @@ You do not need to understand every file. You need a reliable map of the parts t
 - [How it keeps facts separate from guesses](#15-how-it-keeps-facts-separate-from-guesses)
 - [Safety, secrets, and hostile repository text](#16-safety-secrets-and-hostile-repository-text)
 - [The final report](#17-the-final-report)
-- [Twenty visuals explained](#18-twenty-visuals-explained)
-- [Troubleshooting](#19-troubleshooting)
-- [Limitations](#20-limitations)
-- [Project files](#21-project-files)
-- [Contributing](#22-contributing)
-- [License](#23-license)
+- [Troubleshooting](#18-troubleshooting)
+- [Limitations](#19-limitations)
+- [Project files](#20-project-files)
+- [Contributing](#21-contributing)
+- [License](#22-license)
 
 ---
 
@@ -113,7 +112,6 @@ You can try the workflow without installing Python, starting a server, or creati
 2. **Ask for an onboarding report.** Use the prompt below.
 3. **Check the evidence.** Confirm the file paths, commands, and suggested tasks before relying on the report.
 
-![Three ways to give the skill a codebase](assets/readme-04-three-inputs.svg)
 
 ### Copy this starter prompt
 
@@ -134,6 +132,8 @@ Separate verified facts from inferences. Tell me what you could
 not inspect or verify. Do not invent files, commands, or issues.
 Do not run any code.
 ~~~
+
+![A prompt to copy for the first run](assets/readme-20-first-prompt.svg)
 
 If the assistant says it cannot open the URL, do not ask it to guess. Use the source ZIP option in the next section.
 
@@ -239,13 +239,11 @@ The names above are examples. Not every repository has all these files. The assi
 
 A file called `main.py` or `index.js` might be important, but its name alone is not proof that it is the entry point.
 
-![Trace the real program entry point](assets/readme-07-startup-trace.svg)
 
 The skill asks the assistant to check the documented command, inspect the manifest or script that registers it, open the referenced function, and follow the important calls. If several possible entry points exist, the report should list them and explain the evidence for each.
 
 ### Then: follow the data
 
-![Input, validation, core logic, side effect and output](assets/readme-08-request-to-output.svg)
 
 A useful architecture explanation follows what the software does with information:
 - What comes into the program?
@@ -345,7 +343,6 @@ For your first attempt, choose a small public repository with a README and a few
 
 Copy the repository address from your browser and paste it into the chat with the starter prompt in Section 3.
 
-![Start by providing a repository URL or files](assets/readme-04-three-inputs.svg)
 
 ### Step 3 — Ask what the assistant could inspect
 
@@ -373,13 +370,11 @@ If the summary sounds generic and has no file references, ask the assistant to s
 
 Start at the actual entry point. Trace the arrows one at a time. For each arrow, ask which import, function call, route, event, or configuration links those components.
 
-![The program's startup path](assets/readme-07-startup-trace.svg)
 
 ### Step 6 — Read the setup instructions before running commands
 
 The assistant should identify commands from the project documentation and manifests. It should say whether a command is documented, inferred from conventions, or actually tested in an environment.
 
-![How documented, inferred and tested commands differ](assets/readme-11-setup-evidence.svg)
 
 You do not need to execute code just to understand its architecture. If you later decide to run it, read the repository's setup guide and assess whether the project is safe to run first.
 
@@ -387,7 +382,6 @@ You do not need to execute code just to understand its architecture. If you late
 
 Ask for three options with file paths and a verification step. Choose the smallest task that matches your skill level and has clear expected behavior.
 
-![A safe first contribution loop](assets/readme-13-first-contribution-loop.svg)
 
 ### Step 8 — Verify the report
 
@@ -575,131 +569,7 @@ Before delivering the report, the assistant should ask itself:
 - Are unknowns explicit?
 - Are the first contribution ideas small and grounded in actual files?
 
-## 18. Twenty visuals explained
-
-The README includes twenty separate educational illustrations. Each image focuses on a different part of the workflow rather than repeating the same poster.
-
-### Visual 1 — The outcome
-
-![Visual 1: the four practical outcomes](assets/readme-01-value-map.svg)
-
-The value of this skill is not a fancy diagram. The goal is to understand the project, follow its startup path, get an evidence-based setup guide, and find a reasonable first contribution.
-
-### Visual 2 — Before and after
-
-![Visual 2: from repository confusion to a clear next step](assets/readme-02-before-after.svg)
-
-It contrasts random file browsing with a structured report.
-
-### Visual 3 — Skill architecture
-
-![Visual 3: the investigation architecture](assets/readme-03-skill-architecture.svg)
-
-This is the high-level map of how the assistant uses the skill instructions.
-
-### Visual 4 — Input options
-
-![Visual 4: three ways to supply source](assets/readme-04-three-inputs.svg)
-
-Give it a URL, a source ZIP, or the files relevant to the question.
-
-### Visual 5 — Inspection order
-
-![Visual 5: repository investigation order](assets/readme-05-file-priority.svg)
-
-Start with the README and manifests before going deeper.
-
-### Visual 6 — Repository tree
-
-![Visual 6: how to read a repository tree](assets/readme-06-repository-map.svg)
-
-A folder tree gives clues about where project instructions, source, tests, configuration, and automation may live.
-
-### Visual 7 — Startup path
-
-![Visual 7: follow the real entry point](assets/readme-07-startup-trace.svg)
-
-Trace a command or documented launch action into the implementation.
-
-### Visual 8 — Data flow
-
-![Visual 8: follow the input through the program](assets/readme-08-request-to-output.svg)
-
-Map inputs, checks, core logic, side effects, and outputs.
-
-### Visual 9 — Confidence ledger
-
-![Visual 9: facts, inferences and unknowns](assets/readme-09-confidence-ledger.svg)
-
-Keep direct evidence separate from plausible interpretation.
-
-### Visual 10 — Dependency layers
-
-![Visual 10: dependency categories](assets/readme-10-dependency-layers.svg)
-
-Separate runtime, development, optional and external dependencies.
-
-### Visual 11 — Setup evidence
-
-![Visual 11: documented versus inferred versus tested](assets/readme-11-setup-evidence.svg)
-
-A command found in documentation is not the same as a command that was successfully run.
-
-### Visual 12 — Test pyramid
-
-![Visual 12: test layers](assets/readme-12-test-pyramid.svg)
-
-Tests can check a small function, connected components, or a complete user path.
-
-### Visual 13 — Contribution loop
-
-![Visual 13: a safe first contribution](assets/readme-13-first-contribution-loop.svg)
-
-Observe a real gap, keep the scope small, change it, verify it, explain it, then request review.
-
-### Visual 14 — Good scope versus risky scope
-
-![Visual 14: compare contribution scopes](assets/readme-14-good-vs-risky-issues.svg)
-
-Small and measurable is a better first contribution than a broad rewrite.
-
-### Visual 15 — Untrusted repository content
-
-![Visual 15: treat repository instructions as data](assets/readme-15-untrusted-repo-content.svg)
-
-A malicious README comment does not gain authority over the user's request or the assistant's safety rules.
-
-### Visual 16 — Secret handling
-
-![Visual 16: redact secrets](assets/readme-16-secret-handling.svg)
-
-Explain what a setting does without copying an actual key into the report.
-
-### Visual 17 — Report preview
-
-![Visual 17: anatomy of the final report](assets/readme-17-report-preview.svg)
-
-The report gives the reader a map, actionable setup guidance, contribution ideas, and explicit unknowns.
-
-### Visual 18 — Installation routes
-
-![Visual 18: native skill, skill directory, and manual fallback](assets/readme-18-installation-options.svg)
-
-Use the native feature where it exists; otherwise, paste the instructions into an ordinary chat.
-
-### Visual 19 — Quality gate
-
-![Visual 19: the final reliability checks](assets/readme-19-quality-gate.svg)
-
-Before trusting the output, verify the source, arrows, commands, secret handling, unknowns, and contribution scope.
-
-### Visual 20 — First prompt
-
-![Visual 20: a starter prompt](assets/readme-20-first-prompt.svg)
-
-Copy the prompt shown in the illustration, add a repository URL, and start your first onboarding session.
-
-## 19. Troubleshooting
+## 18. Troubleshooting
 
 ### The assistant cannot open my GitHub link
 
@@ -734,7 +604,7 @@ Check that the skill is installed and enabled in the AI product. Make the first 
 
 Ask for the exact execution evidence. If it did not run the command in an appropriate environment, it must change the wording to “documented command,” “suggested command,” or “not tested.”
 
-## 20. Limitations
+## 19. Limitations
 
 This project improves the process an AI assistant follows. It does not give the assistant new permissions or guarantee a perfect understanding of the code.
 
@@ -750,7 +620,7 @@ This project improves the process an AI assistant follows. It does not give the 
 
 The aim is not to eliminate engineering judgment. It is to help a new contributor spend less time lost in the repository and more time making a well-understood change.
 
-## 21. Project files
+## 20. Project files
 
 ~~~text
 codebase-onboarding-agent/
@@ -793,7 +663,7 @@ codebase-onboarding-agent/
     └── acceptance-tests.md
 ~~~
 
-## 22. Contributing
+## 21. Contributing
 
 Suggestions and improvements are welcome. Keep them focused and reproducible.
 
@@ -805,7 +675,7 @@ Suggestions and improvements are welcome. Keep them focused and reproducible.
 
 Before submitting a change, check that every image path used in the README points to an existing file and that examples are labeled as synthetic when they are not from a real repository.
 
-## 23. License
+## 22. License
 
 MIT. See [LICENSE](LICENSE).
 
