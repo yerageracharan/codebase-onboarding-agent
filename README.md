@@ -190,19 +190,29 @@ The tool intentionally produces a **structural inventory**, not a verified runti
 
 ## Repository map
 
-Every top-level directory has a purpose. The tag identifies the role of that folder; the link opens its contents on GitHub.
+The directory index below labels **every directory in the repository tree** by purpose. Tags are short role labels; select a folder link to browse its files on GitHub.
 
-| Folder | Tag | Contents |
+| Directory | Tag | Contents |
 |---|---|---|
-| [<code>.github/workflows/</code>](.github/workflows/) | <kbd>CI / Automation</kbd> | Python test matrix and end-to-end verification workflow. |
-| [<code>agents/</code>](agents/) | <kbd>Agent metadata</kbd> | OpenAI-compatible agent interface metadata and default prompt. |
-| [<code>assets/</code>](assets/) | <kbd>Branding</kbd> | Main hero graphic, also used as the agent icon. |
-| [<code>docs/assets/</code>](docs/assets/) | <kbd>Documentation visuals</kbd> | SVG diagrams used to explain the tool and its workflow. |
+| [<code>.github/</code>](.github/) | <kbd>Automation</kbd> | GitHub project automation and workflow configuration. |
+| [<code>.github/workflows/</code>](.github/workflows/) | <kbd>CI / verification</kbd> | Python-version test matrix and the live end-to-end verification demo. |
+| [<code>agents/</code>](agents/) | <kbd>Agent metadata</kbd> | Assistant interface configuration and default prompt. |
+| [<code>assets/</code>](assets/) | <kbd>Branding</kbd> | Hero graphic used as the project visual and agent icon. |
+| [<code>docs/</code>](docs/) | <kbd>Documentation hub</kbd> | Documentation index and detailed installation guide. |
+| [<code>docs/assets/</code>](docs/assets/) | <kbd>Diagrams</kbd> | SVG diagrams used to explain workflows, architecture, safety and report structure. |
 | [<code>docs/references/</code>](docs/references/) | <kbd>Reference guides</kbd> | Report template, investigation checklist and beginner contribution playbook. |
-| [<code>examples/</code>](examples/) | <kbd>Examples &amp; evidence</kbd> | Tiny Taskboard sample project, example report, live verification reports, logs and screenshots. |
-| [<code>scripts/</code>](scripts/) | <kbd>Developer tooling</kbd> | Script that regenerates screenshot captures and verification metadata from run outputs. |
-| [<code>src/codebase_onboarding_agent/</code>](src/codebase_onboarding_agent/) | <kbd>Core package</kbd> | CLI, repository loader, scanner, security filters, AST analysis, model client and report renderer. |
-| [<code>tests/</code>](tests/) | <kbd>Automated tests</kbd> | Unit tests for inventory, repository safety, CLI behavior and model grounding. |
+| [<code>examples/</code>](examples/) | <kbd>Examples index</kbd> | Directory index for the sample project, sample report and verification artifacts. |
+| [<code>examples/reports/</code>](examples/reports/) | <kbd>Sample output</kbd> | Curated example onboarding report based on Tiny Taskboard. |
+| [<code>examples/toy-python-project/</code>](examples/toy-python-project/) | <kbd>Synthetic fixture</kbd> | Small Python CLI project used to demonstrate the analyzer. |
+| [<code>examples/toy-python-project/src/</code>](examples/toy-python-project/src/) | <kbd>Fixture source root</kbd> | Source-layout root for the Tiny Taskboard package. |
+| [<code>examples/toy-python-project/src/taskboard/</code>](examples/toy-python-project/src/taskboard/) | <kbd>Fixture package</kbd> | Task-summary logic, CLI entry point and package initializer. |
+| [<code>examples/toy-python-project/tests/</code>](examples/toy-python-project/tests/) | <kbd>Fixture tests</kbd> | Two tests for completed-task counting and empty input. |
+| [<code>examples/verification/</code>](examples/verification/) | <kbd>Run evidence</kbd> | Captured logs, static and AI reports, model details and run metadata. |
+| [<code>examples/verification/screenshots/</code>](examples/verification/screenshots/) | <kbd>Screenshot captures</kbd> | SVGs rendered from actual CLI output and generated report excerpts. |
+| [<code>scripts/</code>](scripts/) | <kbd>Developer tooling</kbd> | Script that regenerates verification screenshot captures and metadata. |
+| [<code>src/</code>](src/) | <kbd>Python source root</kbd> | Installable application source using the standard Python source-layout convention. |
+| [<code>src/codebase_onboarding_agent/</code>](src/codebase_onboarding_agent/) | <kbd>Core package</kbd> | CLI, repository loader, inventory, security filters, AST analysis, AI client and report renderer. |
+| [<code>tests/</code>](tests/) | <kbd>Automated tests</kbd> | Unit tests for repository handling, inventory, CLI and AI grounding checks. |
 
 ### Important root files
 
