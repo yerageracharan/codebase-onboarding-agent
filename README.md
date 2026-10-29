@@ -13,7 +13,7 @@ A Python CLI that scans a local project or public GitHub repository and creates 
 ![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-3776AB)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
-[Quick start](#quick-start) · [Use cases](#use-cases) · [Screenshots](#verified-run-screenshots) · [Example report](examples/sample-onboarding-report.md) · [Project map](#repository-map) · [Security and limits](#security-and-limitations)
+[Quick start](#quick-start) · [Use cases](#use-cases) · [Screenshots](#verified-run-screenshots) · [Example report](examples/reports/sample-onboarding-report.md) · [Project map](#repository-map) · [Security and limits](#security-and-limitations)
 
 </div>
 
@@ -71,7 +71,7 @@ The built-in downloader currently accepts **public repository-root URLs only**. 
 
 Open <code>onboarding-report.md</code>. It includes the detected file tree, structural inventory, likely entry points, Python symbols, manifest evidence, setup/test references, possible first contributions, and explicit limitations.
 
-For a grounded example based on the included Tiny Taskboard project, see the [sample onboarding report](examples/sample-onboarding-report.md). It is a synthetic example, not an analysis of an external production repository.
+For a grounded example based on the included Tiny Taskboard project, see the [sample onboarding report](examples/reports/sample-onboarding-report.md). It is a synthetic example, not an analysis of an external production repository.
 
 ## Use cases
 
@@ -79,7 +79,7 @@ For a grounded example based on the included Tiny Taskboard project, see the [sa
 |---|---|---|
 | **First contribution to open source** | Locate the documented command, likely startup files, functions and tests before choosing a small issue. | [Entry points and symbols screenshot](examples/verification/screenshots/05-entry-points-symbols.svg) |
 | **Students learning an unfamiliar project** | Turn a large or unfamiliar file tree into a concise map and a suggested investigation sequence. | [Tiny Taskboard source example](examples/toy-python-project/) |
-| **Repository handover or onboarding** | Produce a repeatable Markdown overview that a teammate can review alongside source evidence. | [Sample report](examples/sample-onboarding-report.md) |
+| **Repository handover or onboarding** | Produce a repeatable Markdown overview that a teammate can review alongside source evidence. | [Sample report](examples/reports/sample-onboarding-report.md) |
 | **Pre-review investigation** | Find manifest declarations, test paths, setup instructions and areas that need owner confirmation before changing code. | [Static analysis screenshot](examples/verification/screenshots/02-analysis-command.svg) |
 | **AI-assisted explanation with guardrails** | Use a configured OpenAI-compatible endpoint for plain-English interpretation, with deterministic filters for certain detectable contradictions. | [AI grounding validation screenshot](examples/verification/screenshots/12-ai-grounding-validation.svg) |
 
@@ -129,7 +129,7 @@ The included synthetic project, **Tiny Taskboard**, is deliberately small. Its <
 The sample project has two tests, covering a completed-task count and an empty list. They are run as a separate step in verification; the analyzer itself does not execute target code or tests.
 
 - [Read the example project's source](examples/toy-python-project/)
-- [Read the sample onboarding report](examples/sample-onboarding-report.md)
+- [Read the sample onboarding report](examples/reports/sample-onboarding-report.md)
 - [Read the most recent AI-enhanced report](examples/verification/toy-taskboard-ai-report.md)
 - [Read the live GitHub analysis report](examples/verification/live-github-report.md)
 
@@ -202,7 +202,7 @@ Every top-level directory has a purpose. The tag identifies the role of that fol
 | File | Role |
 |---|---|
 | [<code>README.md</code>](README.md) | Project homepage, feature overview, setup, screenshots and links. |
-| [<code>INSTALLING.md</code>](INSTALLING.md) | Extended installation and configuration instructions. |
+| [<code>docs/installation.md</code>](docs/installation.md) | Extended installation and configuration instructions. |
 | [<code>pyproject.toml</code>](pyproject.toml) | Package metadata, supported Python version, test dependency and CLI registration. |
 | [<code>SKILL.md</code>](SKILL.md) | Optional assistant instruction skill; separate from the executable Python CLI. |
 | [<code>LICENSE</code>](LICENSE) | MIT license. |
