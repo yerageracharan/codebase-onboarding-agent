@@ -94,7 +94,7 @@ Structural inventory map (not a verified runtime call graph):
 |---|---|---:|
 | .github/workflows/tests.yml | Continuous-integration or automation configuration. | 25 |
 | .github/workflows/verification-demo.yml | Continuous-integration or automation configuration. | 109 |
-| README.md | Documentation; use it to understand the intended purpose and documented commands. | 274 |
+| README.md | Documentation; use it to understand the intended purpose and documented commands. | 284 |
 | docs/README.md | Documentation; use it to understand the intended purpose and documented commands. | 19 |
 | examples/README.md | Documentation; use it to understand the intended purpose and documented commands. | 28 |
 | examples/toy-python-project/README.md | Documentation; use it to understand the intended purpose and documented commands. | 19 |
@@ -223,8 +223,8 @@ Manifest entries prove that a dependency is declared, not that the analyzer conf
 The following command references were found in inspected documentation or common configuration files. They were not executed.
 
 - README.md:54: python -m pip install -e ".[test]"
-- README.md:249: python -m pip install -e ".[test]"
-- README.md:250: python -m pytest -q
+- README.md:259: python -m pip install -e ".[test]"
+- README.md:260: python -m pytest -q
 - pyproject.toml:30: test = ["pytest>=8.0"]
 - pyproject.toml:38: [tool.pytest.ini_options]
 - .github/workflows/tests.yml:23: run: python -m pip install -e ".[test]"
