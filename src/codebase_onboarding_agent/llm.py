@@ -183,6 +183,15 @@ def _model_path_mentions(text: str, inventory: Inventory) -> tuple[list[str], li
 def _grounding_issue(text: str, inventory: Inventory, path_hint: str | None = None) -> str | None:
     if re.search(r"\bpip\s+-m\s+pip\b", text, re.IGNORECASE):
         return "uses a malformed pip invocation; the documented form is python -m pip"
+    unquoted_extras = re.search(
+        r"\bpip\s+install\b.{0,80}(?:-e|--editable)\s+\.\[[A-Za-z0-9_,.-]+\](?![\"'])",
+        text, re.IGNORECASE,
+    )
+    if unquoted_extras and any(
+        re.search(r'\bpip\s+install\b.*"\.\[', evidence, re.IGNORECASE)
+        for evidence in inventory.setup_evidence
+    ):
+        return "drops the quoting used by the documented optional-dependency install command"
     """Return a deterministic contradiction when one is detectable.
 
     This is deliberately a conservative guardrail, not a proof of semantic truth.
