@@ -93,8 +93,22 @@ def _extract_json(content: str) -> dict[str, Any]:
         stripped = fence.group(1)
     try:
         value = json.loads(stripped)
-    except json.JSONDecodeError as exc:
-        raise ModelError("The model response was not valid JSON. Try another model or run static-only mode.") from exc
+    except json.JSONDecodeError as original_error:
+        # Some compatible models wrap a valid JSON object in a short preamble or suffix.
+        # Decode one object from the first opening brace; never execute or evaluate content.
+        start = stripped.find("{")
+        if start < 0:
+            raise ModelError(
+                f"The model response was not valid JSON (line {original_error.lineno}, column {original_error.colno}). "
+                "Try another model or run static-only mode."
+            ) from original_error
+        try:
+            value, _ = json.JSONDecoder().raw_decode(stripped[start:])
+        except json.JSONDecodeError as exc:
+            raise ModelError(
+                f"The model response did not contain a complete JSON object (line {exc.lineno}, column {exc.colno}). "
+                "Try another model or run static-only mode."
+            ) from exc
     if not isinstance(value, dict):
         raise ModelError("The model response must be a JSON object.")
     allowed = {"overview", "architecture_summary", "execution_walkthrough", "notable_designs", "contributions", "unknowns"}
@@ -129,7 +143,10 @@ def analyze_with_model(inventory: Inventory, config: ModelConfig) -> dict[str, A
         "overview (string), architecture_summary (string), execution_walkthrough (array of strings), "
         "notable_designs (array of strings), contributions (array of objects with title, path, reason, "
         "verification), unknowns (array of strings). Cite real paths and line numbers when available. "
-        "Clearly distinguish facts from inferences. Never repeat secret-looking values."
+        "Clearly distinguish facts from inferences. Never repeat secret-looking values. "
+        "Keep the JSON compact: overview at most two sentences, architecture_summary at most three sentences, "
+        "up to four short walkthrough items, up to three design observations, and up to three concise contribution ideas. "
+        "Aim for fewer than 300 words total and output no Markdown outside the JSON object."
     )
     user_prompt = (
         f"Analyze this repository for a beginner. Repository: {inventory.source_description}\n"

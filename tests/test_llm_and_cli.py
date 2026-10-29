@@ -33,7 +33,9 @@ def test_model_response_schema_and_malformed_response() -> None:
     result = _extract_json('{"overview":"A small tool", "unknowns":["runtime behavior"]}')
     assert result["overview"] == "A small tool"
     assert result["unknowns"] == ["runtime behavior"]
-    with pytest.raises(ModelError, match="valid JSON"):
+    wrapped = _extract_json('Here is the JSON result: {"overview":"wrapped response"} That is all.')
+    assert wrapped["overview"] == "wrapped response"
+    with pytest.raises(ModelError, match="not valid JSON"):
         _extract_json("this is not JSON")
     with pytest.raises(ModelError, match="JSON object"):
         _extract_json("[]")
