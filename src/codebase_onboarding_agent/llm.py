@@ -181,6 +181,8 @@ def _model_path_mentions(text: str, inventory: Inventory) -> tuple[list[str], li
 
 
 def _grounding_issue(text: str, inventory: Inventory, path_hint: str | None = None) -> str | None:
+    if re.search(r"\bpip\s+-m\s+pip\b", text, re.IGNORECASE):
+        return "uses a malformed pip invocation; the documented form is python -m pip"
     """Return a deterministic contradiction when one is detectable.
 
     This is deliberately a conservative guardrail, not a proof of semantic truth.
@@ -237,6 +239,32 @@ def _grounding_issue(text: str, inventory: Inventory, path_hint: str | None = No
         paths, unknown_in_sentence = _model_path_mentions(sentence, inventory)
         if unknown_in_sentence:
             return f"references a file path absent from the scanned inventory: {unknown_in_sentence[0]}"
+
+        # When an answer describes direct children of src, verify the actual parent
+        # directories rather than treating a basename as a complete path.
+        describes_src_children = re.search(
+            r"\bsrc\b.{0,20}\b(?:directory|folder)\b.{0,100}\b(?:includes?|contains?|has)\b",
+            sentence, re.IGNORECASE,
+        )
+        if describes_src_children:
+            for basename in re.findall(r"(?<!/)\b([A-Za-z0-9_.-]+\.py)\b", sentence):
+                resolved = _resolve_model_path(basename, inventory)
+                if resolved and Path(resolved).parent.as_posix() != "src":
+                    return (
+                        f"describes {resolved} as a direct child of src, but the inventory "
+                        f"places it under {Path(resolved).parent.as_posix()}"
+                    )
+
+        init_marker_claim = re.search(
+            r"\b__init__\.py\b.{0,120}\b(?:marker|marks|indicates|represents|denotes)\b.{0,80}\bsrc\b"
+            r"|\bsrc\b.{0,80}\b(?:marker|marks|indicates|represents|denotes)\b.{0,80}\b__init__\.py\b",
+            sentence, re.IGNORECASE,
+        )
+        if init_marker_claim:
+            init_paths = [p for p in paths if Path(p).name == "__init__.py"]
+            if any(Path(p).parent.as_posix() != "src" for p in init_paths):
+                return "describes a nested package __init__.py as a marker for the src directory"
+
         for symbol in inventory.symbols:
             if len(symbol.name) < 5:
                 continue
@@ -356,6 +384,9 @@ def analyze_with_model(inventory: Inventory, config: ModelConfig) -> dict[str, A
         "notable_designs (array of strings), contributions (array of objects with title, path, reason, "
         "verification), unknowns (array of strings). Cite real paths and line numbers when available. "
         "Clearly distinguish facts from inferences. Never repeat secret-looking values. "
+        "Copy setup and test commands verbatim from inspected documentation or manifests; never reorder or improvise commands. "
+        "Use full nested repository-relative paths when describing source files. An __init__.py file belongs to its actual parent package; "
+        "do not describe a nested package initializer as a marker for the src directory. "
         "Keep the JSON compact: overview at most two sentences, architecture_summary at most three sentences, "
         "up to four short walkthrough items, up to three design observations, and up to three concise contribution ideas. "
         "Aim for fewer than 300 words total and output no Markdown outside the JSON object."
