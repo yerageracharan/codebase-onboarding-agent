@@ -2,22 +2,22 @@
 
 **Source:** https://github.com/yerageracharan/codebase-onboarding-agent (downloaded ZIP; branch/revision not pinned)  
 **Mode:** static-only  
-**Readable files inspected:** 49  
-**Paths skipped:** 35  
+**Readable files inspected:** 51  
+**Paths skipped:** 34  
 **Safety:** the analyzer did not execute repository source files, install scripts, or target tests.
 
 ## 1. Thirty-second overview
 
 Static-only mode does not guess the product purpose from the repository name.
 
-**Evidence found:** README.md, examples/toy-python-project/README.md, examples/verification/README.md
+**Evidence found:** README.md, docs/README.md, examples/README.md, examples/toy-python-project/README.md
 **Project manifests:** pyproject.toml, examples/toy-python-project/pyproject.toml
 
 ## 2. Scope and repository map
 
 - Source: https://github.com/yerageracharan/codebase-onboarding-agent (downloaded ZIP; branch/revision not pinned)
-- Included files: 49
-- Skipped paths: 35
+- Included files: 51
+- Skipped paths: 34
 - A GitHub URL is downloaded as a ZIP archive; this version does not pin a branch or commit.
 - Commands listed below are evidence found in source files, not commands executed by this analyzer.
 
@@ -27,11 +27,16 @@ Static-only mode does not guess the product purpose from the repository name.
       └── .github/workflows/tests.yml
       └── .github/workflows/verification-demo.yml
       └── .gitignore
-      └── INSTALLING.md
       └── README.md
       └── SKILL.md
       └── agents/openai.yaml
-      └── examples/sample-onboarding-report.md
+      └── docs/README.md
+      └── docs/installation.md
+      └── docs/references/analysis-output-template.md
+      └── docs/references/beginner-issue-playbook.md
+      └── docs/references/investigation-checklist.md
+      └── examples/README.md
+      └── examples/reports/sample-onboarding-report.md
       └── examples/toy-python-project/README.md
       └── examples/toy-python-project/pyproject.toml
       └── examples/toy-python-project/src/taskboard/__init__.py
@@ -54,9 +59,6 @@ Static-only mode does not guess the product purpose from the repository name.
       └── examples/verification/toy-taskboard-ai-report.md
       └── examples/verification/toy-taskboard-report.md
       └── pyproject.toml
-      └── references/analysis-output-template.md
-      └── references/beginner-issue-playbook.md
-      └── references/investigation-checklist.md
       └── scripts/generate_verification_screenshots.py
       └── src/codebase_onboarding_agent/__init__.py
       └── src/codebase_onboarding_agent/__main__.py
@@ -84,7 +86,7 @@ Structural inventory map (not a verified runtime call graph):
     |-- Entry-point evidence: examples/toy-python-project/pyproject.toml / examples/toy-python-project/src/taskboard/app.py / examples/toy-python-project/src/taskboard/cli.py
     |-- Readable source files: 19
     |-- Likely test paths: 4
-    |-- Skipped paths: 35
+    |-- Skipped paths: 34
 
 ### Important files
 
@@ -92,7 +94,9 @@ Structural inventory map (not a verified runtime call graph):
 |---|---|---:|
 | .github/workflows/tests.yml | Continuous-integration or automation configuration. | 25 |
 | .github/workflows/verification-demo.yml | Continuous-integration or automation configuration. | 109 |
-| README.md | Documentation; use it to understand the intended purpose and documented commands. | 338 |
+| README.md | Documentation; use it to understand the intended purpose and documented commands. | 274 |
+| docs/README.md | Documentation; use it to understand the intended purpose and documented commands. | 19 |
+| examples/README.md | Documentation; use it to understand the intended purpose and documented commands. | 28 |
 | examples/toy-python-project/README.md | Documentation; use it to understand the intended purpose and documented commands. | 19 |
 | examples/toy-python-project/pyproject.toml | Python package/build metadata, dependency declarations, and possible CLI registrations. | 15 |
 | examples/verification/README.md | Documentation; use it to understand the intended purpose and documented commands. | 104 |
@@ -218,9 +222,9 @@ Manifest entries prove that a dependency is declared, not that the analyzer conf
 
 The following command references were found in inspected documentation or common configuration files. They were not executed.
 
-- README.md:52: python -m pip install -e ".[test]"
-- README.md:208: python -m pip install -e ".[test]"
-- README.md:209: python -m pytest -q
+- README.md:54: python -m pip install -e ".[test]"
+- README.md:249: python -m pip install -e ".[test]"
+- README.md:250: python -m pytest -q
 - pyproject.toml:30: test = ["pytest>=8.0"]
 - pyproject.toml:38: [tool.pytest.ini_options]
 - .github/workflows/tests.yml:23: run: python -m pip install -e ".[test]"
@@ -229,6 +233,7 @@ The following command references were found in inspected documentation or common
 - .github/workflows/verification-demo.yml:40: run: python -m pytest -v | tee examples/verification/05-test-results.txt
 - .github/workflows/verification-demo.yml:43: PYTHONPATH=examples/toy-python-project/src python -m pytest -v examples/toy-python-project/tests | tee examples/verification/06-toy-project-tests.txt
 - .github/workflows/verification-demo.yml:77: ! grep -Eiq "source code is not included|unit tests are not included|contains the project.s metadata|__init__\\.py.{0,120}contains the summarize_tasks function|pip -m pip install|python -m pip install -e \\.\\[test\\]|sr
+- examples/README.md:16: python -m pip install -e ".[test]"
 - examples/toy-python-project/README.md:9: python -m pip install -e ".[test]"
 - examples/toy-python-project/README.md:17: python -m pytest -q
 - examples/toy-python-project/README.md:19: The example intentionally has no third-party runtime dependencies. The optional test dependency installs pytest. Its source uses the src layout, so install it before running the command or importing the package in tests.
@@ -278,26 +283,26 @@ A detected test file does not prove tests pass. No target test suite was run.
 |---|---|
 | LICENSE | unsupported or likely binary file type |
 | assets/hero.svg | unsupported or likely binary file type |
-| assets/readme-01-value-map.svg | unsupported or likely binary file type |
-| assets/readme-02-before-after.svg | unsupported or likely binary file type |
-| assets/readme-03-skill-architecture.svg | unsupported or likely binary file type |
-| assets/readme-04-three-inputs.svg | unsupported or likely binary file type |
-| assets/readme-05-file-priority.svg | unsupported or likely binary file type |
-| assets/readme-06-repository-map.svg | unsupported or likely binary file type |
-| assets/readme-07-startup-trace.svg | unsupported or likely binary file type |
-| assets/readme-08-request-to-output.svg | unsupported or likely binary file type |
-| assets/readme-09-confidence-ledger.svg | unsupported or likely binary file type |
-| assets/readme-10-dependency-layers.svg | unsupported or likely binary file type |
-| assets/readme-11-setup-evidence.svg | unsupported or likely binary file type |
-| assets/readme-12-test-pyramid.svg | unsupported or likely binary file type |
-| assets/readme-13-first-contribution-loop.svg | unsupported or likely binary file type |
-| assets/readme-14-good-vs-risky-issues.svg | unsupported or likely binary file type |
-| assets/readme-15-untrusted-repo-content.svg | unsupported or likely binary file type |
-| assets/readme-16-secret-handling.svg | unsupported or likely binary file type |
-| assets/readme-17-report-preview.svg | unsupported or likely binary file type |
-| assets/readme-18-installation-options.svg | unsupported or likely binary file type |
-| assets/readme-19-quality-gate.svg | unsupported or likely binary file type |
-| assets/readme-20-first-prompt.svg | unsupported or likely binary file type |
+| docs/assets/readme-01-value-map.svg | unsupported or likely binary file type |
+| docs/assets/readme-02-before-after.svg | unsupported or likely binary file type |
+| docs/assets/readme-03-skill-architecture.svg | unsupported or likely binary file type |
+| docs/assets/readme-04-three-inputs.svg | unsupported or likely binary file type |
+| docs/assets/readme-05-file-priority.svg | unsupported or likely binary file type |
+| docs/assets/readme-06-repository-map.svg | unsupported or likely binary file type |
+| docs/assets/readme-07-startup-trace.svg | unsupported or likely binary file type |
+| docs/assets/readme-08-request-to-output.svg | unsupported or likely binary file type |
+| docs/assets/readme-09-confidence-ledger.svg | unsupported or likely binary file type |
+| docs/assets/readme-10-dependency-layers.svg | unsupported or likely binary file type |
+| docs/assets/readme-11-setup-evidence.svg | unsupported or likely binary file type |
+| docs/assets/readme-12-test-pyramid.svg | unsupported or likely binary file type |
+| docs/assets/readme-13-first-contribution-loop.svg | unsupported or likely binary file type |
+| docs/assets/readme-14-good-vs-risky-issues.svg | unsupported or likely binary file type |
+| docs/assets/readme-15-untrusted-repo-content.svg | unsupported or likely binary file type |
+| docs/assets/readme-16-secret-handling.svg | unsupported or likely binary file type |
+| docs/assets/readme-17-report-preview.svg | unsupported or likely binary file type |
+| docs/assets/readme-18-installation-options.svg | unsupported or likely binary file type |
+| docs/assets/readme-19-quality-gate.svg | unsupported or likely binary file type |
+| docs/assets/readme-20-first-prompt.svg | unsupported or likely binary file type |
 | examples/verification/screenshots/01-cli-help.svg | unsupported or likely binary file type |
 | examples/verification/screenshots/02-analysis-command.svg | unsupported or likely binary file type |
 | examples/verification/screenshots/03-report-overview.svg | unsupported or likely binary file type |
@@ -309,7 +314,6 @@ A detected test file does not prove tests pass. No target test suite was run.
 | examples/verification/screenshots/09-invalid-url.svg | unsupported or likely binary file type |
 | examples/verification/screenshots/10-live-github-download.svg | unsupported or likely binary file type |
 | examples/verification/screenshots/11-real-model-request.svg | unsupported or likely binary file type |
-| examples/verification/screenshots/12-ai-enhanced-report.svg | unsupported or likely binary file type |
 | examples/verification/screenshots/12-ai-grounding-validation.svg | unsupported or likely binary file type |
 
 ## 11. Suggested next step
