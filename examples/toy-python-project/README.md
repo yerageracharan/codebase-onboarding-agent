@@ -2,12 +2,24 @@
 
 A deliberately small command-line example that prints a task summary. This synthetic project demonstrates how Codebase Onboarding Agent grounds its explanation in files.
 
-## Run
+## Run it
 
-From this folder, run:
+Open a terminal in this folder and install the example in editable mode:
 
 ~~~powershell
-python -m taskboard.cli
+python -m pip install -e ".[test]"
 ~~~
 
-For editable installation, inspect pyproject.toml. The example is intentionally minimal and has no third-party runtime dependencies.
+Then run the command registered in pyproject.toml:
+
+~~~powershell
+taskboard
+~~~
+
+To run the tests:
+
+~~~powershell
+python -m pytest -q
+~~~
+
+The example intentionally has no third-party runtime dependencies. The optional test dependency installs pytest. Its source uses the `src/` layout, so install it before running the command or importing the package in tests.
