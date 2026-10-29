@@ -75,7 +75,7 @@ def test_grounding_filter_removes_contradictory_and_unsupported_model_claims(tmp
     project = tmp_path / "project"
     (project / "src" / "taskboard").mkdir(parents=True)
     (project / "tests").mkdir()
-    (project / "README.md").write_text("# Tiny Taskboard\n", encoding="utf-8")
+    (project / "README.md").write_text("# Tiny Taskboard\n\npython -m pip install -e \".[test]\"\n", encoding="utf-8")
     (project / "pyproject.toml").write_text(
         "[project]\nname = 'tiny-taskboard'\n", encoding="utf-8"
     )
