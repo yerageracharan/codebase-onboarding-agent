@@ -3,7 +3,7 @@
 **Source:** https://github.com/yerageracharan/codebase-onboarding-agent (downloaded ZIP; branch/revision not pinned)  
 **Mode:** static-only  
 **Readable files inspected:** 49  
-**Paths skipped:** 34  
+**Paths skipped:** 35  
 **Safety:** the analyzer did not execute repository source files, install scripts, or target tests.
 
 ## 1. Thirty-second overview
@@ -17,7 +17,7 @@ Static-only mode does not guess the product purpose from the repository name.
 
 - Source: https://github.com/yerageracharan/codebase-onboarding-agent (downloaded ZIP; branch/revision not pinned)
 - Included files: 49
-- Skipped paths: 34
+- Skipped paths: 35
 - A GitHub URL is downloaded as a ZIP archive; this version does not pin a branch or commit.
 - Commands listed below are evidence found in source files, not commands executed by this analyzer.
 
@@ -84,7 +84,7 @@ Structural inventory map (not a verified runtime call graph):
     |-- Entry-point evidence: examples/toy-python-project/pyproject.toml / examples/toy-python-project/src/taskboard/app.py / examples/toy-python-project/src/taskboard/cli.py
     |-- Readable source files: 19
     |-- Likely test paths: 4
-    |-- Skipped paths: 34
+    |-- Skipped paths: 35
 
 ### Important files
 
@@ -149,9 +149,9 @@ Symbols found by Python syntax-tree parsing. A symbol location does not prove th
 | function _extract_json | src/codebase_onboarding_agent/llm.py:94-131 | Not documented |
 | function _resolve_model_path | src/codebase_onboarding_agent/llm.py:153-167 | Resolve a model-mentioned repository path without trusting model inference. |
 | function _model_path_mentions | src/codebase_onboarding_agent/llm.py:170-180 | Not documented |
-| function _grounding_issue | src/codebase_onboarding_agent/llm.py:183-275 | Return a deterministic contradiction when one is detectable. |
-| function validate_model_analysis | src/codebase_onboarding_agent/llm.py:278-338 | Remove model-generated claims that conflict with deterministic repository facts. |
-| function analyze_with_model | src/codebase_onboarding_agent/llm.py:341-409 | Ask a configured model for a source-grounded interpretation of the inventory. |
+| function _grounding_issue | src/codebase_onboarding_agent/llm.py:183-303 | Not documented |
+| function validate_model_analysis | src/codebase_onboarding_agent/llm.py:306-366 | Remove model-generated claims that conflict with deterministic repository facts. |
+| function analyze_with_model | src/codebase_onboarding_agent/llm.py:369-440 | Ask a configured model for a source-grounded interpretation of the inventory. |
 | function _cell | src/codebase_onboarding_agent/report.py:14-15 | Not documented |
 | function _model_text | src/codebase_onboarding_agent/report.py:18-22 | Not documented |
 | function _file_role | src/codebase_onboarding_agent/report.py:25-41 | Not documented |
@@ -178,11 +178,11 @@ Symbols found by Python syntax-tree parsing. A symbol location does not prove th
 | class FakeResponse | tests/test_llm_and_cli.py:56-60 | Not documented |
 | function __enter__ | tests/test_llm_and_cli.py:57-58 | Not documented |
 | function __exit__ | tests/test_llm_and_cli.py:59-60 | Not documented |
-| function test_grounding_filter_removes_contradictory_and_unsupported_model_claims | tests/test_llm_and_cli.py:74-142 | Not documented |
-| function test_grounding_filter_rejects_a_direct_symbol_file_mismatch | tests/test_llm_and_cli.py:145-170 | Not documented |
-| function test_cli_static_end_to_end_writes_report | tests/test_llm_and_cli.py:173-184 | Not documented |
-| function test_cli_ai_mode_requires_configuration | tests/test_llm_and_cli.py:187-195 | Not documented |
-| function test_config_requires_base_url_and_model | tests/test_llm_and_cli.py:198-202 | Not documented |
+| function test_grounding_filter_removes_contradictory_and_unsupported_model_claims | tests/test_llm_and_cli.py:74-150 | Not documented |
+| function test_grounding_filter_rejects_a_direct_symbol_file_mismatch | tests/test_llm_and_cli.py:153-178 | Not documented |
+| function test_cli_static_end_to_end_writes_report | tests/test_llm_and_cli.py:181-192 | Not documented |
+| function test_cli_ai_mode_requires_configuration | tests/test_llm_and_cli.py:195-203 | Not documented |
+| function test_config_requires_base_url_and_model | tests/test_llm_and_cli.py:206-210 | Not documented |
 | function make_zip | tests/test_repository.py:13-18 | Not documented |
 | function test_parse_github_url_accepts_only_public_repo_shape | tests/test_repository.py:21-29 | Not documented |
 | function test_zip_extraction_and_public_repo_loader_mock | tests/test_repository.py:32-47 | Not documented |
@@ -228,6 +228,7 @@ The following command references were found in inspected documentation or common
 - .github/workflows/verification-demo.yml:25: run: python -m pip install -e ".[test]"
 - .github/workflows/verification-demo.yml:40: run: python -m pytest -v | tee examples/verification/05-test-results.txt
 - .github/workflows/verification-demo.yml:43: PYTHONPATH=examples/toy-python-project/src python -m pytest -v examples/toy-python-project/tests | tee examples/verification/06-toy-project-tests.txt
+- .github/workflows/verification-demo.yml:77: ! grep -Eiq "source code is not included|unit tests are not included|contains the project.s metadata|__init__\\.py.{0,120}contains the summarize_tasks function|pip -m pip install|src.? directory includes.{0,80}__init__\\
 - examples/toy-python-project/README.md:9: python -m pip install -e ".[test]"
 - examples/toy-python-project/README.md:17: python -m pytest -q
 - examples/toy-python-project/README.md:19: The example intentionally has no third-party runtime dependencies. The optional test dependency installs pytest. Its source uses the src layout, so install it before running the command or importing the package in tests.
@@ -309,6 +310,7 @@ A detected test file does not prove tests pass. No target test suite was run.
 | examples/verification/screenshots/10-live-github-download.svg | unsupported or likely binary file type |
 | examples/verification/screenshots/11-real-model-request.svg | unsupported or likely binary file type |
 | examples/verification/screenshots/12-ai-enhanced-report.svg | unsupported or likely binary file type |
+| examples/verification/screenshots/12-ai-grounding-validation.svg | unsupported or likely binary file type |
 
 ## 11. Suggested next step
 
