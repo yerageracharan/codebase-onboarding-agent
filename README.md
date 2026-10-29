@@ -104,7 +104,9 @@ Local directory or public GitHub URL
   -> manifest parsing and Python AST symbol extraction
   -> entry-point candidates and evidence inventory
   -> Markdown report
-  -> optional AI interpretation when explicitly requested\n  -> deterministic grounding checks over generated claims\n  -> Markdown report (or static-only fallback if all AI content is rejected)
+  -> optional AI interpretation when explicitly requested
+  -> deterministic grounding checks over generated claims
+  -> Markdown report (or static-only fallback if all AI content is rejected)
 ~~~
 
 ~~~mermaid
@@ -118,7 +120,8 @@ flowchart TD
     C --> G{"--with-ai?"}
     G -- "No; default" --> F
     G -- "Yes; configured endpoint" --> H["llm.py"]
-    H --> F
+    H --> J["Deterministic grounding checks"]
+    J --> F
     F --> I["Markdown report"]
 ~~~
 
