@@ -21,6 +21,11 @@ def test_context_is_bounded_and_does_not_include_env(tmp_path: Path) -> None:
     assert "README.md" in context
     assert ".env" not in context
     assert "very-secret-string-value" not in context
+    (tmp_path / "src" / "taskboard").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "src" / "taskboard" / "app.py").write_text("def summarize_tasks(items):\\n    return len(items)\\n", encoding="utf-8")
+    indexed = build_inventory(tmp_path)
+    indexed_context = build_context(indexed)
+    assert "function summarize_tasks at src/taskboard/app.py:1-2" in indexed_context
 
 
 def test_model_response_schema_and_malformed_response() -> None:
@@ -48,9 +53,13 @@ def test_model_request_parses_openai_compatible_response(tmp_path: Path) -> None
     cfg = ModelConfig("http://127.0.0.1:11434/v1", "test-model")
     assert cfg.timeout_seconds == 120.0
     assert cfg.endpoint == "http://127.0.0.1:11434/v1/chat/completions"
-    with patch("codebase_onboarding_agent.llm.urllib.request.urlopen", return_value=FakeResponse(payload)):
+    with patch("codebase_onboarding_agent.llm.urllib.request.urlopen", return_value=FakeResponse(payload)) as mocked_open:
         actual = analyze_with_model(inv, cfg)
     assert actual["overview"] == output["overview"]
+    request = mocked_open.call_args.args[0]
+    sent = json.loads(request.data.decode("utf-8"))
+    assert sent["response_format"] == {"type": "json_object"}
+    assert sent["max_tokens"] == 700
 
 
 def test_cli_static_end_to_end_writes_report(tmp_path: Path) -> None:

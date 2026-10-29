@@ -9,7 +9,7 @@ This directory is populated by the verification workflow. It tests the executabl
 3. Live public GitHub ZIP download of this repository, followed by static report generation.
 4. The Codebase Onboarding Agent test suite.
 5. Tiny Taskboard's two tests and demo CLI, run separately from analysis.
-6. A real AI request to a locally hosted Ollama model (qwen2.5:0.5b) through the OpenAI-compatible /v1/chat/completions endpoint.
+6. A real AI request to a locally hosted Ollama model (qwen2.5:1.5b) through the OpenAI-compatible /v1/chat/completions endpoint.
 7. Validation of the AI-enhanced report from that request.
 8. Invalid repository URL rejection without a network request.
 
@@ -90,8 +90,8 @@ PYTHONPATH=examples/toy-python-project/src python -m pytest -v examples/toy-pyth
 PYTHONPATH=examples/toy-python-project/src python -m taskboard.cli
 codebase-onboard https://github.com/yerageracharan/codebase-onboarding-agent --output examples/verification/live-github-report.md --static-only
 ollama serve
-ollama pull qwen2.5:0.5b
-CODEBASE_AGENT_BASE_URL=http://127.0.0.1:11434/v1 CODEBASE_AGENT_MODEL=qwen2.5:0.5b codebase-onboard examples/toy-python-project --with-ai --output examples/verification/toy-taskboard-ai-report.md
+ollama pull qwen2.5:1.5b
+CODEBASE_AGENT_BASE_URL=http://127.0.0.1:11434/v1 CODEBASE_AGENT_MODEL=qwen2.5:1.5b codebase-onboard examples/toy-python-project --with-ai --output examples/verification/toy-taskboard-ai-report.md
 python scripts/generate_verification_screenshots.py
 ~~~
 

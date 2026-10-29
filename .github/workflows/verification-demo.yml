@@ -54,15 +54,15 @@ jobs:
             sleep 2
           done
           if [ "$ready" -ne 1 ]; then cat /tmp/ollama-serve.log; echo "Ollama server did not become ready." >&2; exit 1; fi
-          ollama pull qwen2.5:0.5b
+          ollama pull qwen2.5:1.5b
           echo "CODEBASE_AGENT_BASE_URL=http://127.0.0.1:11434/v1" >> "$GITHUB_ENV"
-          echo "CODEBASE_AGENT_MODEL=qwen2.5:0.5b" >> "$GITHUB_ENV"
+          echo "CODEBASE_AGENT_MODEL=qwen2.5:1.5b" >> "$GITHUB_ENV"
           export CODEBASE_AGENT_BASE_URL=http://127.0.0.1:11434/v1
-          export CODEBASE_AGENT_MODEL=qwen2.5:0.5b
+          export CODEBASE_AGENT_MODEL=qwen2.5:1.5b
           {
             echo "Provider: Ollama"
             echo "Endpoint: http://127.0.0.1:11434/v1"
-            echo "Model: qwen2.5:0.5b"
+            echo "Model: qwen2.5:1.5b"
             echo "Authentication: none (local server)"
           } | tee examples/verification/09-ollama-model.txt
           codebase-onboard examples/toy-python-project --with-ai --output examples/verification/toy-taskboard-ai-report.md 2>&1 | tee examples/verification/10-ai-model-run.txt
