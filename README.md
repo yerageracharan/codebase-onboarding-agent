@@ -210,6 +210,10 @@ The tests use temporary synthetic projects and mocked model/network responses. T
 
 Continuous integration is configured in .github/workflows/tests.yml for Python 3.11, 3.12, and 3.13.
 
+## Reproducible example run and screenshots
+
+A repeatable verification workflow installs the CLI, analyzes the included Tiny Taskboard project, captures the generated report, runs the agent tests and sample project tests separately, and publishes screenshots of the actual output. See the [verification walkthrough and screenshot gallery](examples/verification/README.md). The workflow does not call a real model provider or execute target code as part of analysis.
+
 ## First contributions
 
 Good next improvements are small, verifiable changes: add tests for an additional manifest format, improve a false-positive entry-point heuristic, expand secret-pattern tests, or improve report readability for one supported language.
