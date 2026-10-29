@@ -13,6 +13,7 @@ permissions:
 jobs:
   reproduce:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -30,12 +31,42 @@ jobs:
       - name: Analyze the included synthetic project
         run: |
           codebase-onboard examples/toy-python-project --output examples/verification/toy-taskboard-report.md --static-only | tee examples/verification/03-toy-run.txt
+      - name: Test live public GitHub ZIP download
+        run: |
+          codebase-onboard https://github.com/yerageracharan/codebase-onboarding-agent --output examples/verification/live-github-report.md --static-only | tee examples/verification/04-live-github-run.txt
+          grep -q "Source: https://github.com/yerageracharan/codebase-onboarding-agent" examples/verification/live-github-report.md
+          grep -q "static-only" examples/verification/live-github-report.md
       - name: Run the agent's own tests
         run: python -m pytest -v | tee examples/verification/05-test-results.txt
       - name: Separately test and run the synthetic example
         run: |
           PYTHONPATH=examples/toy-python-project/src python -m pytest -v examples/toy-python-project/tests | tee examples/verification/06-toy-project-tests.txt
           PYTHONPATH=examples/toy-python-project/src python -m taskboard.cli | tee examples/verification/07-toy-project-run.txt
+      - name: Test a real AI model through a local OpenAI-compatible endpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL https://ollama.com/install.sh | sh
+          nohup ollama serve > /tmp/ollama-serve.log 2>&1 &
+          ready=0
+          for attempt in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:11434/api/tags >/dev/null; then ready=1; break; fi
+            sleep 2
+          done
+          if [ "$ready" -ne 1 ]; then cat /tmp/ollama-serve.log; echo "Ollama server did not become ready." >&2; exit 1; fi
+          ollama pull qwen2.5:1.5b
+          echo "CODEBASE_AGENT_BASE_URL=http://127.0.0.1:11434/v1" >> "$GITHUB_ENV"
+          echo "CODEBASE_AGENT_MODEL=qwen2.5:1.5b" >> "$GITHUB_ENV"
+          {
+            echo "Provider: Ollama"
+            echo "Endpoint: http://127.0.0.1:11434/v1"
+            echo "Model: qwen2.5:1.5b"
+            echo "Authentication: none (local server)"
+          } | tee examples/verification/09-ollama-model.txt
+          codebase-onboard examples/toy-python-project --with-ai --output examples/verification/toy-taskboard-ai-report.md 2>&1 | tee examples/verification/10-ai-model-run.txt
+          grep -q "AI-enhanced" examples/verification/10-ai-model-run.txt
+          grep -q "## AI-assisted interpretation" examples/verification/toy-taskboard-ai-report.md
+          grep -q "### Project interpretation" examples/verification/toy-taskboard-ai-report.md
       - name: Verify invalid repository URL handling without network access
         shell: bash
         run: |
@@ -63,11 +94,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add examples/verification/
-          if git diff --cached --quiet; then
-            echo "Verification evidence is already up to date."
-            exit 0
-          fi
-          git commit -m "Add reproducible CLI example and execution screenshots"
+          if git diff --cached --quiet; then echo "Verification evidence is already up to date."; exit 0; fi
+          git commit -m "Record live GitHub and local-model verification"
           if ! git push origin HEAD:main; then
             echo "::warning::Could not commit run evidence to main; the workflow artifact above still contains the captured files."
           fi
