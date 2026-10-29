@@ -10,7 +10,7 @@ This directory is populated by the verification workflow. It tests the executabl
 4. The Codebase Onboarding Agent test suite.
 5. Tiny Taskboard's two tests and demo CLI, run separately from analysis.
 6. A real AI request to a locally hosted Ollama model (qwen2.5:1.5b) through the OpenAI-compatible /v1/chat/completions endpoint.
-7. Validation of the AI-enhanced report from that request.
+7. Deterministic checks against the AI response: contradictory claims are removed, and fully rejected output falls back to a static-only report.
 8. Invalid repository URL rejection without a network request.
 
 ## Screenshots of the actual run
@@ -61,15 +61,17 @@ Each image is rendered from saved stdout/stderr or excerpts of the report files 
 
 ![Real model request](screenshots/11-real-model-request.svg)
 
-### 12. AI-enhanced report produced by that request
+### 12. AI report grounding validation
 
-![AI-enhanced report](screenshots/12-ai-enhanced-report.svg)
+![AI report grounding validation](screenshots/12-ai-grounding-validation.svg)
+
+The model is not treated as a source of truth. The report keeps model-generated explanations only when they pass the implemented consistency checks; detected contradictions are removed and reported, and if no usable model content remains the CLI writes a static-only report.
 
 ## Evidence files
 
 - toy-taskboard-report.md — static report written from the included project.
 - live-github-report.md — report written after downloading the public repository archive.
-- toy-taskboard-ai-report.md — report produced with a real Ollama model request.
+- toy-taskboard-ai-report.md — report produced after a real Ollama model request; the grounding validator may remove conflicting claims or use a static-only fallback.
 - 01-version.txt and 02-help.txt — CLI output.
 - 03-toy-run.txt, 04-live-github-run.txt, 10-ai-model-run.txt — actual CLI run summaries.
 - 05-test-results.txt — agent test results.
@@ -95,7 +97,7 @@ CODEBASE_AGENT_BASE_URL=http://127.0.0.1:11434/v1 CODEBASE_AGENT_MODEL=qwen2.5:1
 python scripts/generate_verification_screenshots.py
 ~~~
 
-The analyzer does not execute target source. Sample project tests and its runtime command are separate verification steps. Live GitHub testing requires network access; AI testing downloads/runs the selected local model.
+The analyzer does not execute target source. Sample project tests and its runtime command are separate verification steps. Live GitHub testing requires network access; AI testing downloads/runs the selected local model. Grounding checks catch detectable path, file-absence, symbol-location, and metadata-attribution contradictions; they are not a proof of semantic correctness.
 
 ## Verification boundaries
 
