@@ -6,20 +6,14 @@ A deliberately small command-line example that prints a task summary. This synth
 
 Open a terminal in this folder and install the example in editable mode:
 
-~~~powershell
-python -m pip install -e ".[test]"
-~~~
+    python -m pip install -e ".[test]"
 
 Then run the command registered in pyproject.toml:
 
-~~~powershell
-taskboard
-~~~
+    taskboard
 
 To run the tests:
 
-~~~powershell
-python -m pytest -q
-~~~
+    python -m pytest -q
 
-The example intentionally has no third-party runtime dependencies. The optional test dependency installs pytest. Its source uses the `src/` layout, so install it before running the command or importing the package in tests.
+The example intentionally has no third-party runtime dependencies. The optional test dependency installs pytest. Its source uses the src layout, so install it before running the command or importing the package in tests.

@@ -1,44 +1,62 @@
-# Install and use Codebase Onboarding Agent
+# Installing Codebase Onboarding Agent
 
-This is a portable Agent Skill folder. Products expose skills in different ways; plans, account settings, regions and workspace administrators may affect availability. The fallback that works in a normal chat is to paste SKILL.md into the conversation and provide the repository URL or source files.
+This document describes the executable Python CLI in this repository. It is separate from the optional Agent Skill in SKILL.md.
 
-## Claude
+## Requirements
 
-Claude supports skills in eligible Claude experiences when the required skills/code-execution capabilities are enabled. Use the current official docs because import UI can differ by surface and account:
+- Python 3.11 or newer.
+- Network access only when installing Python packages or analyzing a public GitHub repository.
+- An AI model endpoint is optional. Static analysis works without an API key.
 
-- https://support.claude.com/en/articles/12512176-what-are-skills
-- https://support.claude.com/en/articles/12512176-what-are-skills
+## Install from a local checkout
 
-If your Claude interface offers skill import, package this folder as a ZIP with SKILL.md at the skill folder root and upload it. If not, use the manual fallback below.
+Clone or download this repository, open a terminal at its root, then run:
 
-## ChatGPT and Codex
+    python -m pip install -e ".[test]"
 
-OpenAI Agent Skills availability depends on product surface and account/workspace eligibility. Current documentation describes standalone skills in the ChatGPT desktop app, Codex CLI and IDE extension; skills in supported plugins may have broader ChatGPT surface availability.
+Verify the command:
 
-- https://learn.chatgpt.com/docs/build-skills
-- https://help.openai.com/en/articles/20001066-skills-in-chatgpt
+    codebase-onboard --help
 
-Where your client provides a skill installation path, install this folder as a skill. For Codex-style repository skills, check the current docs for the expected directory location. If your account does not expose native skill installation, paste SKILL.md into a conversation and attach the source ZIP.
+An alternative module invocation is:
 
-## Gemini
+    python -m codebase_onboarding_agent --help
 
-Gemini has multiple product surfaces. Agent Skills are documented for Gemini CLI. The Gemini Apps custom Skills feature is currently documented for Gemini Spark and may require an eligible personal account, subscription and region.
+## Analyze a local directory
 
-- https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/skills.md
-- https://support.google.com/gemini/answer/17094296?hl=en
+    codebase-onboard /path/to/project --output onboarding-report.md --static-only
 
-If Gemini Apps exposes a Skills page to your account, use its Upload option and select SKILL.md or a ZIP containing SKILL.md in the main folder. Do not assume the feature is enabled for every account.
+On Windows PowerShell, paths may look like:
 
-## Manual fallback for any assistant
+    codebase-onboard "C:\Users\you\source\project" --output onboarding-report.md
 
-1. Open SKILL.md.
-2. Copy its complete contents into the assistant's instructions, or upload the Markdown file if the chat accepts it.
-3. Provide a public GitHub repository URL or upload the source ZIP.
-4. Ask for a beginner-friendly codebase onboarding report.
-5. If the assistant cannot access the URL, do not let it guess: upload the source or paste the file tree and important files.
+## Analyze public GitHub
 
-This is not a persistent installed skill. You may need to provide the instructions again in a new chat.
+    codebase-onboard https://github.com/OWNER/REPOSITORY --output onboarding-report.md
 
-## Limitations
+Only public repository root URLs are supported by the built-in downloader. Private repositories, individual file URLs, branch URLs, and subdirectory URLs are not supported. The downloaded ZIP is limited in compressed and expanded size.
 
-The skill contains instructions, not a GitHub connector. It cannot independently access a private repository, browse the web, clone source, run a build or execute tests. Those actions work only if the assistant has the relevant connected tools and permissions. Do not provide access tokens or secrets in chat.
+## Optional model setup
+
+Set CODEBASE_AGENT_BASE_URL and CODEBASE_AGENT_MODEL to use an OpenAI-compatible chat-completions endpoint. CODEBASE_AGENT_API_KEY is optional for local endpoints and should be supplied only through the environment when a provider requires it.
+
+Windows PowerShell:
+
+    $env:CODEBASE_AGENT_BASE_URL = "http://localhost:11434/v1"
+    $env:CODEBASE_AGENT_MODEL = "your-installed-model-name"
+    codebase-onboard . --with-ai
+
+macOS/Linux:
+
+    export CODEBASE_AGENT_BASE_URL="http://localhost:11434/v1"
+    export CODEBASE_AGENT_MODEL="your-installed-model-name"
+    codebase-onboard . --with-ai
+
+The model must already be available through the configured server. AI mode transmits selected redacted source excerpts to that endpoint; do not use it on confidential projects unless sharing is authorized.
+
+## Run tests
+
+    python -m pip install -e ".[test]"
+    python -m pytest -q
+
+The tests use synthetic repositories and mocked network/model responses. They do not run the target projects or validate live provider connectivity.
