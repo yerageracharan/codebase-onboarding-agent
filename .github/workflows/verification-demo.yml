@@ -74,7 +74,7 @@ jobs:
             grep -q "AI response rejected by grounding checks" examples/verification/10-ai-model-run.txt
           fi
           # Regression guard for the exact hallucinations found during the manual audit.
-          ! grep -Eiq "source code is not included|unit tests are not included|contains the project.s metadata|__init__\\.py.{0,120}contains the summarize_tasks function|pip -m pip install|src.? directory includes.{0,80}__init__\\.py|marker for the src directory" examples/verification/toy-taskboard-ai-report.md
+          ! grep -Eiq "source code is not included|unit tests are not included|contains the project.s metadata|__init__\\.py.{0,120}contains the summarize_tasks function|pip -m pip install|python -m pip install -e \\.\\[test\\]|src.? directory includes.{0,80}__init__\\.py|marker for the src directory" examples/verification/toy-taskboard-ai-report.md
       - name: Verify invalid repository URL handling without network access
         shell: bash
         run: |
