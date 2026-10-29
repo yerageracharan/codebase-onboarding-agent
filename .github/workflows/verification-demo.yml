@@ -66,9 +66,15 @@ jobs:
             echo "Authentication: none (local server)"
           } | tee examples/verification/09-ollama-model.txt
           codebase-onboard examples/toy-python-project --with-ai --output examples/verification/toy-taskboard-ai-report.md 2>&1 | tee examples/verification/10-ai-model-run.txt
-          grep -q "AI-enhanced" examples/verification/10-ai-model-run.txt
-          grep -q "## AI-assisted interpretation" examples/verification/toy-taskboard-ai-report.md
-          grep -q "### Project interpretation" examples/verification/toy-taskboard-ai-report.md
+          if grep -q "Mode: AI-enhanced" examples/verification/10-ai-model-run.txt; then
+            grep -q "## AI-assisted interpretation" examples/verification/toy-taskboard-ai-report.md
+            grep -q "### Project interpretation" examples/verification/toy-taskboard-ai-report.md
+          else
+            grep -q "static-only (AI output rejected by grounding checks)" examples/verification/toy-taskboard-ai-report.md
+            grep -q "AI response rejected by grounding checks" examples/verification/10-ai-model-run.txt
+          fi
+          # Regression guard for the exact hallucinations found during the manual audit.
+          ! grep -Eiq "source code is not included|unit tests are not included|__init__\\.py.{0,120}(metadata|summarize_tasks)" examples/verification/toy-taskboard-ai-report.md
       - name: Verify invalid repository URL handling without network access
         shell: bash
         run: |

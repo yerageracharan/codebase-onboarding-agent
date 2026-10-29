@@ -6,6 +6,7 @@ import json
 import re
 import urllib.error
 import urllib.request
+from pathlib import Path
 from typing import Any
 
 from .config import ModelConfig
@@ -17,6 +18,10 @@ MAX_RESPONSE_BYTES = 1_000_000
 
 class ModelError(RuntimeError):
     """Raised when an optional model call fails or returns unusable data."""
+
+
+class ModelGroundingError(ModelError):
+    """Raised when model claims cannot be reconciled with deterministic evidence."""
 
 
 def build_context(inventory: Inventory) -> str:
@@ -126,6 +131,213 @@ def _extract_json(content: str) -> dict[str, Any]:
     return normalized
 
 
+
+_SOURCE_SUFFIXES = {
+    ".py", ".pyi", ".js", ".jsx", ".mjs", ".cjs", ".ts", ".tsx", ".java",
+    ".kt", ".go", ".rs", ".c", ".h", ".cc", ".cpp", ".hpp", ".cs", ".rb",
+    ".php", ".swift", ".md", ".rst", ".toml", ".json", ".yaml", ".yml",
+    ".ini", ".cfg", ".txt", ".sh", ".sql", ".html", ".css", ".xml",
+}
+_MANIFEST_NAMES = {
+    "pyproject.toml", "package.json", "cargo.toml", "go.mod", "pom.xml",
+    "build.gradle", "requirements.txt", "makefile", "dockerfile",
+}
+_PATH_PATTERN = re.compile(
+    r"(?<![A-Za-z0-9_])((?:[A-Za-z0-9_.@+-]+/)*[A-Za-z0-9_.@+-]+\."
+    r"(?:pyi?|jsx?|mjs|cjs|tsx?|java|kt|go|rs|c|h|cc|cpp|hpp|cs|rb|php|swift|"
+    r"md|rst|toml|json|ya?ml|ini|cfg|txt|sh|sql|html|css|xml|gradle))"
+    r"(?::\d+(?:-\d+)?)?"
+)
+
+
+def _resolve_model_path(candidate: str, inventory: Inventory) -> str | None:
+    """Resolve a model-mentioned repository path without trusting model inference."""
+    normalized = candidate.replace("\\", "/").removeprefix("./").strip("'\".,;:()[]{}")
+    if normalized in inventory.files:
+        return normalized
+    # Models may echo a temporary absolute checkout path. Only accept it when its
+    # suffix matches a path in the exact deterministic inventory.
+    suffix_matches = [path for path in inventory.files if normalized.endswith("/" + path)]
+    if len(suffix_matches) == 1:
+        return suffix_matches[0]
+    if "/" not in normalized:
+        basename_matches = [path for path in inventory.files if Path(path).name == normalized]
+        if len(basename_matches) == 1:
+            return basename_matches[0]
+    return None
+
+
+def _model_path_mentions(text: str, inventory: Inventory) -> tuple[list[str], list[str]]:
+    known: list[str] = []
+    unknown: list[str] = []
+    for match in _PATH_PATTERN.finditer(text):
+        candidate = match.group(1)
+        resolved = _resolve_model_path(candidate, inventory)
+        if resolved:
+            known.append(resolved)
+        else:
+            unknown.append(candidate)
+    return list(dict.fromkeys(known)), list(dict.fromkeys(unknown))
+
+
+def _grounding_issue(text: str, inventory: Inventory, path_hint: str | None = None) -> str | None:
+    """Return a deterministic contradiction when one is detectable.
+
+    This is deliberately a conservative guardrail, not a proof of semantic truth.
+    It catches nonexistent file references, source/test absence claims, common
+    symbol-to-file misattributions, and unsupported claims that a non-manifest
+    source file holds project metadata.
+    """
+    if path_hint:
+        resolved_hint = _resolve_model_path(path_hint, inventory)
+        if resolved_hint is None:
+            return f"references a path absent from the scanned inventory: {path_hint}"
+
+    known_paths, unknown_paths = _model_path_mentions(text, inventory)
+    if unknown_paths:
+        return f"references a file path absent from the scanned inventory: {unknown_paths[0]}"
+
+    code_files = [
+        record for record in inventory.files.values()
+        if Path(record.path).suffix.lower() in _SOURCE_SUFFIXES
+        and Path(record.path).suffix.lower() not in {".md", ".rst", ".toml", ".json", ".yaml", ".yml", ".ini", ".cfg", ".txt"}
+    ]
+    source_missing = re.search(
+        r"\b(?:source\s+code|source\s+files?|implementation\s+files?)\b.{0,100}"
+        r"\b(?:not included|not present|missing|absent|not available|not in (?:the )?repository)\b"
+        r"|\b(?:not included|not present|missing|absent|not available|not in (?:the )?repository)\b"
+        r".{0,100}\b(?:source\s+code|source\s+files?|implementation\s+files?)\b",
+        text, re.IGNORECASE | re.DOTALL,
+    )
+    if source_missing and code_files:
+        return "claims source code is missing even though source files are present in the inventory"
+
+    tests_missing = re.search(
+        r"\b(?:unit\s+tests?|tests?|test\s+files?)\b.{0,100}"
+        r"\b(?:not included|not present|missing|absent|not available|not in (?:the )?repository)\b"
+        r"|\b(?:not included|not present|missing|absent|not available|not in (?:the )?repository)\b"
+        r".{0,100}\b(?:unit\s+tests?|tests?|test\s+files?)\b",
+        text, re.IGNORECASE | re.DOTALL,
+    )
+    if tests_missing and inventory.test_files:
+        return "claims tests are missing even though likely test paths are present in the inventory"
+
+    only_files = re.search(
+        r"\bonly\b.{0,180}\b(?:files?\s+)?(?:are\s+)?(?:present|included|available|exist|provided)\b",
+        text, re.IGNORECASE | re.DOTALL,
+    )
+    if only_files:
+        mentioned = set(known_paths)
+        if len(mentioned) < len(inventory.files):
+            return "claims only a subset of files is present despite a larger deterministic file inventory"
+
+    # Check direct, explicit file-to-symbol assignments using parsed AST locations.
+    sentences = re.split(r"(?<=[.!?])\s+(?=[A-Z])", text)
+    for sentence in sentences:
+        paths, unknown_in_sentence = _model_path_mentions(sentence, inventory)
+        if unknown_in_sentence:
+            return f"references a file path absent from the scanned inventory: {unknown_in_sentence[0]}"
+        for symbol in inventory.symbols:
+            if len(symbol.name) < 5:
+                continue
+            if not re.search(rf"\b{re.escape(symbol.name)}\b", sentence):
+                continue
+            for path in paths:
+                direct_claim = re.search(
+                    rf"(?:{re.escape(path)}|{re.escape(Path(path).name)}).{{0,90}}"
+                    rf"\b(?:contains?|defines?|declares?|implements?|exports?)\b.{{0,90}}"
+                    rf"\b{re.escape(symbol.name)}\b",
+                    sentence, re.IGNORECASE,
+                )
+                reverse_claim = re.search(
+                    rf"\b{re.escape(symbol.name)}\b.{{0,70}}"
+                    rf"\b(?:is defined|is declared|is implemented|lives)\b.{{0,40}}"
+                    rf"\b(?:in|at)\s+(?:the\s+)?(?:file\s+)?"
+                    rf"(?:{re.escape(path)}|{re.escape(Path(path).name)})\b",
+                    sentence, re.IGNORECASE,
+                )
+                if (direct_claim or reverse_claim) and path != symbol.path:
+                    return f"assigns symbol {symbol.name} to {path}, but the AST locates it in {symbol.path}"
+
+        if re.search(r"\bmetadata\b", sentence, re.IGNORECASE) and re.search(
+            r"\b(?:contains?|stores?|holds?|defines?|provides?|declares?)\b", sentence, re.IGNORECASE
+        ):
+            for path in paths:
+                if Path(path).name.lower() in _MANIFEST_NAMES:
+                    continue
+                record = inventory.files[path]
+                source_has_metadata_marker = re.search(
+                    r"\bmetadata\b|__version__|__all__\s*=|\bversion\s*=", record.text, re.IGNORECASE
+                )
+                if not source_has_metadata_marker:
+                    return f"attributes project metadata to {path}, but no metadata/version declaration is visible in that file"
+
+    return None
+
+
+def validate_model_analysis(analysis: dict[str, Any], inventory: Inventory) -> dict[str, Any]:
+    """Remove model-generated claims that conflict with deterministic repository facts.
+
+    The deterministic sections of the report remain available even if all model
+    claims are rejected. Warnings contain reasons, never copies of untrusted claims.
+    """
+    cleaned = dict(analysis)
+    warnings: list[str] = []
+    for field_name in ("overview", "architecture_summary"):
+        value = cleaned.get(field_name)
+        if isinstance(value, str) and value.strip():
+            issue = _grounding_issue(value, inventory)
+            if issue:
+                cleaned[field_name] = ""
+                warnings.append(f"Removed the model-generated {field_name.replace('_', ' ')} because it {issue}.")
+
+    for field_name in ("execution_walkthrough", "notable_designs", "unknowns"):
+        values = cleaned.get(field_name)
+        if not isinstance(values, list):
+            cleaned[field_name] = []
+            continue
+        accepted = []
+        for value in values:
+            if not isinstance(value, str):
+                continue
+            issue = _grounding_issue(value, inventory)
+            if issue:
+                warnings.append(f"Removed one {field_name.replace('_', ' ')} item because it {issue}.")
+            else:
+                accepted.append(value)
+        cleaned[field_name] = accepted
+
+    suggestions = cleaned.get("contributions")
+    if not isinstance(suggestions, list):
+        cleaned["contributions"] = []
+    else:
+        accepted_suggestions = []
+        for item in suggestions:
+            if not isinstance(item, dict):
+                continue
+            path = item.get("path", "")
+            title = item.get("title", "")
+            reason = item.get("reason", "")
+            verification = item.get("verification", "")
+            combined = " ".join(str(value) for value in (title, path, reason, verification))
+            issue = _grounding_issue(combined, inventory, str(path) if path else None)
+            if issue:
+                warnings.append(f"Removed one model-suggested contribution because it {issue}.")
+            else:
+                accepted_suggestions.append(item)
+        cleaned["contributions"] = accepted_suggestions
+
+    cleaned["_grounding_warnings"] = warnings
+    has_content = bool(
+        str(cleaned.get("overview", "")).strip()
+        or str(cleaned.get("architecture_summary", "")).strip()
+        or any(cleaned.get(key) for key in ("execution_walkthrough", "notable_designs", "unknowns", "contributions"))
+    )
+    if not has_content:
+        raise ModelGroundingError("All model-generated claims conflicted with deterministic repository evidence.")
+    return cleaned
+
+
 def analyze_with_model(inventory: Inventory, config: ModelConfig) -> dict[str, Any]:
     """Ask a configured model for a source-grounded interpretation of the inventory."""
     context = build_context(inventory)
@@ -194,4 +406,4 @@ def analyze_with_model(inventory: Inventory, config: ModelConfig) -> dict[str, A
         raise ModelError("The endpoint did not return a compatible chat-completions response.") from exc
     if not isinstance(content, str):
         raise ModelError("The model returned a non-text response; this client expects text JSON.")
-    return _extract_json(content)
+    return validate_model_analysis(_extract_json(content), inventory)
