@@ -11,7 +11,7 @@ from .analysis import AnalysisResult, analyze_repository
 from .config import ModelConfig
 from .entrypoints import find_entrypoints
 from .inventory import build_inventory
-from .llm import ModelError, analyze_with_model
+from .llm import ModelError, ModelGroundingError, analyze_with_model
 from .report import generate_report
 from .repository import RepositoryError, open_repository
 
@@ -58,10 +58,28 @@ def run(source: str, output: Path, with_ai: bool = False) -> int:
                 inventory = build_inventory(root, source_description)
                 try:
                     ai = analyze_with_model(inventory, model_config)
+                except ModelGroundingError as exc:
+                    print(
+                        f"AI response rejected by grounding checks; writing a static-only report instead: {exc}",
+                        file=sys.stderr,
+                    )
+                    result = AnalysisResult(
+                        inventory,
+                        find_entrypoints(inventory),
+                        ai=None,
+                        mode="static-only (AI output rejected by grounding checks)",
+                    )
                 except ModelError as exc:
                     print(f"Model analysis failed: {exc}", file=sys.stderr)
                     return 3
-                result = AnalysisResult(inventory, find_entrypoints(inventory), ai=ai, mode="AI-enhanced")
+                else:
+                    warnings = ai.get("_grounding_warnings", [])
+                    if warnings:
+                        print(
+                            f"Grounding checks removed {len(warnings)} unsupported model claim(s).",
+                            file=sys.stderr,
+                        )
+                    result = AnalysisResult(inventory, find_entrypoints(inventory), ai=ai, mode="AI-enhanced")
             else:
                 result = analyze_repository(root, source_description)
             report = generate_report(result)
