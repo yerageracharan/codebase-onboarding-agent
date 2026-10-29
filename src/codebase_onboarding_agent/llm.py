@@ -164,7 +164,7 @@ def analyze_with_model(inventory: Inventory, config: ModelConfig) -> dict[str, A
             {"role": "user", "content": user_prompt},
         ],
         "temperature": 0.1,
-        "max_tokens": 700,
+        "max_tokens": 1200,
         "response_format": {"type": "json_object"},
     }).encode("utf-8")
     request = urllib.request.Request(

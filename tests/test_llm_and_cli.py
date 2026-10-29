@@ -62,7 +62,7 @@ def test_model_request_parses_openai_compatible_response(tmp_path: Path) -> None
     request = mocked_open.call_args.args[0]
     sent = json.loads(request.data.decode("utf-8"))
     assert sent["response_format"] == {"type": "json_object"}
-    assert sent["max_tokens"] == 700
+    assert sent["max_tokens"] == 1200
 
 
 def test_cli_static_end_to_end_writes_report(tmp_path: Path) -> None:
