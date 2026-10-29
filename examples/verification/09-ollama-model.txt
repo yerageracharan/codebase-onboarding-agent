@@ -1,0 +1,4 @@
+Provider: Ollama
+Endpoint: http://127.0.0.1:11434/v1
+Model: qwen2.5:0.5b
+Authentication: none (local server)

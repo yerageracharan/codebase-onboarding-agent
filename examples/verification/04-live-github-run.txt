@@ -1,0 +1,2 @@
+Report written: /home/runner/work/codebase-onboarding-agent/codebase-onboarding-agent/examples/verification/live-github-report.md
+Mode: static-only; files inspected: 44; skipped: 31
