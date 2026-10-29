@@ -81,6 +81,18 @@ def _ai_sections(ai: dict[str, Any]) -> list[str]:
                 if text:
                     output.append(f"- {text}")
             output.append("")
+    grounding_warnings = ai.get("_grounding_warnings")
+    if isinstance(grounding_warnings, list) and grounding_warnings:
+        output.extend([
+            "### Grounding checks",
+            "",
+            f"The deterministic validator removed {len(grounding_warnings)} model claim(s) that conflicted with the scanned evidence:",
+            "",
+        ])
+        for warning in grounding_warnings[:12]:
+            if isinstance(warning, str):
+                output.append(f"- {_model_text(warning, 500)}")
+        output.append("")
     suggestions = ai.get("contributions")
     if isinstance(suggestions, list) and suggestions:
         output.extend(["### Model-suggested contribution ideas", ""])
