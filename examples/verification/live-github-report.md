@@ -91,11 +91,11 @@ Structural inventory map (not a verified runtime call graph):
 | File | Observed role or filename-based hint | Lines |
 |---|---|---:|
 | .github/workflows/tests.yml | Continuous-integration or automation configuration. | 25 |
-| .github/workflows/verification-demo.yml | Continuous-integration or automation configuration. | 103 |
-| README.md | Documentation; use it to understand the intended purpose and documented commands. | 333 |
+| .github/workflows/verification-demo.yml | Continuous-integration or automation configuration. | 109 |
+| README.md | Documentation; use it to understand the intended purpose and documented commands. | 338 |
 | examples/toy-python-project/README.md | Documentation; use it to understand the intended purpose and documented commands. | 19 |
 | examples/toy-python-project/pyproject.toml | Python package/build metadata, dependency declarations, and possible CLI registrations. | 15 |
-| examples/verification/README.md | Documentation; use it to understand the intended purpose and documented commands. | 102 |
+| examples/verification/README.md | Documentation; use it to understand the intended purpose and documented commands. | 104 |
 | pyproject.toml | Python package/build metadata, dependency declarations, and possible CLI registrations. | 40 |
 
 ## 4. Likely entry points
@@ -105,11 +105,11 @@ Structural inventory map (not a verified runtime call graph):
 - **Filename heuristic:** Common command-line interface module filename; execution role should be verified in its contents. Evidence: examples/toy-python-project/src/taskboard/cli.py. Confidence: heuristic — confirm before treating as the actual startup path.
 - **Python module guard:** This file contains an if __name__ == '__main__' block, a direct-execution entry point. Evidence: examples/toy-python-project/src/taskboard/cli.py:13. Confidence: verified syntax pattern.
 - **Registered CLI script:** The codebase-onboard command is registered to codebase_onboarding_agent.cli:main in pyproject.toml. Evidence: pyproject.toml. Confidence: manifest declaration.
-- **Python module guard:** This file contains an if __name__ == '__main__' block, a direct-execution entry point. Evidence: scripts/generate_verification_screenshots.py:100. Confidence: verified syntax pattern.
+- **Python module guard:** This file contains an if __name__ == '__main__' block, a direct-execution entry point. Evidence: scripts/generate_verification_screenshots.py:108. Confidence: verified syntax pattern.
 - **Filename heuristic:** Python module execution entry point by filename convention. Evidence: src/codebase_onboarding_agent/__main__.py. Confidence: heuristic — confirm before treating as the actual startup path.
 - **Python module guard:** This file contains an if __name__ == '__main__' block, a direct-execution entry point. Evidence: src/codebase_onboarding_agent/__main__.py:5. Confidence: verified syntax pattern.
 - **Filename heuristic:** Common command-line interface module filename; execution role should be verified in its contents. Evidence: src/codebase_onboarding_agent/cli.py. Confidence: heuristic — confirm before treating as the actual startup path.
-- **Python module guard:** This file contains an if __name__ == '__main__' block, a direct-execution entry point. Evidence: src/codebase_onboarding_agent/cli.py:94. Confidence: verified syntax pattern.
+- **Python module guard:** This file contains an if __name__ == '__main__' block, a direct-execution entry point. Evidence: src/codebase_onboarding_agent/cli.py:112. Confidence: verified syntax pattern.
 
 ## 5. Python functions and classes
 
@@ -124,12 +124,12 @@ Symbols found by Python syntax-tree parsing. A symbol location does not prove th
 | function capture | scripts/generate_verification_screenshots.py:15-36 | Not documented |
 | function read | scripts/generate_verification_screenshots.py:39-41 | Not documented |
 | function section | scripts/generate_verification_screenshots.py:44-54 | Not documented |
-| function main | scripts/generate_verification_screenshots.py:57-97 | Not documented |
+| function main | scripts/generate_verification_screenshots.py:57-105 | Not documented |
 | class AnalysisResult | src/codebase_onboarding_agent/analysis.py:14-18 | Not documented |
 | function analyze_repository | src/codebase_onboarding_agent/analysis.py:21-24 | Not documented |
 | function build_parser | src/codebase_onboarding_agent/cli.py:19-35 | Not documented |
-| function run | src/codebase_onboarding_agent/cli.py:38-85 | Not documented |
-| function main | src/codebase_onboarding_agent/cli.py:88-91 | Not documented |
+| function run | src/codebase_onboarding_agent/cli.py:38-103 | Not documented |
+| function main | src/codebase_onboarding_agent/cli.py:106-109 | Not documented |
 | class EntryPoint | src/codebase_onboarding_agent/entrypoints.py:13-18 | Not documented |
 | function _python_main_guards | src/codebase_onboarding_agent/entrypoints.py:21-46 | Not documented |
 | function find_entrypoints | src/codebase_onboarding_agent/entrypoints.py:49-89 | Not documented |
@@ -143,17 +143,22 @@ Symbols found by Python syntax-tree parsing. A symbol location does not prove th
 | function _add_dependency | src/codebase_onboarding_agent/inventory.py:152-158 | Not documented |
 | function _parse_manifests | src/codebase_onboarding_agent/inventory.py:161-238 | Not documented |
 | function build_inventory | src/codebase_onboarding_agent/inventory.py:241-280 | Build an evidence inventory without executing target code. |
-| class ModelError | src/codebase_onboarding_agent/llm.py:18-19 | Raised when an optional model call fails or returns unusable data. |
-| function build_context | src/codebase_onboarding_agent/llm.py:22-86 | Serialize bounded, redacted source excerpts with line numbers. |
-| function _extract_json | src/codebase_onboarding_agent/llm.py:89-126 | Not documented |
-| function analyze_with_model | src/codebase_onboarding_agent/llm.py:129-197 | Ask a configured model for a source-grounded interpretation of the inventory. |
+| class ModelError | src/codebase_onboarding_agent/llm.py:19-20 | Raised when an optional model call fails or returns unusable data. |
+| class ModelGroundingError | src/codebase_onboarding_agent/llm.py:23-24 | Raised when model claims cannot be reconciled with deterministic evidence. |
+| function build_context | src/codebase_onboarding_agent/llm.py:27-91 | Serialize bounded, redacted source excerpts with line numbers. |
+| function _extract_json | src/codebase_onboarding_agent/llm.py:94-131 | Not documented |
+| function _resolve_model_path | src/codebase_onboarding_agent/llm.py:153-167 | Resolve a model-mentioned repository path without trusting model inference. |
+| function _model_path_mentions | src/codebase_onboarding_agent/llm.py:170-180 | Not documented |
+| function _grounding_issue | src/codebase_onboarding_agent/llm.py:183-275 | Return a deterministic contradiction when one is detectable. |
+| function validate_model_analysis | src/codebase_onboarding_agent/llm.py:278-338 | Remove model-generated claims that conflict with deterministic repository facts. |
+| function analyze_with_model | src/codebase_onboarding_agent/llm.py:341-409 | Ask a configured model for a source-grounded interpretation of the inventory. |
 | function _cell | src/codebase_onboarding_agent/report.py:14-15 | Not documented |
 | function _model_text | src/codebase_onboarding_agent/report.py:18-22 | Not documented |
 | function _file_role | src/codebase_onboarding_agent/report.py:25-41 | Not documented |
 | function _architecture | src/codebase_onboarding_agent/report.py:44-64 | Not documented |
 | function select | src/codebase_onboarding_agent/report.py:54-55 | Not documented |
-| function _ai_sections | src/codebase_onboarding_agent/report.py:67-100 | Not documented |
-| function generate_report | src/codebase_onboarding_agent/report.py:103-248 | Not documented |
+| function _ai_sections | src/codebase_onboarding_agent/report.py:67-112 | Not documented |
+| function generate_report | src/codebase_onboarding_agent/report.py:115-260 | Not documented |
 | class RepositoryError | src/codebase_onboarding_agent/repository.py:22-23 | Raised when a repository source cannot safely be opened. |
 | function parse_github_url | src/codebase_onboarding_agent/repository.py:26-41 | Parse a narrowly supported public GitHub repository URL. |
 | function _read_limited | src/codebase_onboarding_agent/repository.py:44-55 | Not documented |
@@ -167,15 +172,17 @@ Symbols found by Python syntax-tree parsing. A symbol location does not prove th
 | function test_inventory_excludes_secret_files_and_redacts_secret_values | tests/test_inventory.py:45-54 | Not documented |
 | function test_entrypoint_detection_uses_real_guard_and_manifest | tests/test_inventory.py:57-63 | Not documented |
 | function test_report_is_static_and_evidence_forward | tests/test_inventory.py:66-74 | Not documented |
-| function test_context_is_bounded_and_does_not_include_env | tests/test_llm_and_cli.py:16-29 | Not documented |
-| function test_model_response_schema_and_malformed_response | tests/test_llm_and_cli.py:32-41 | Not documented |
-| function test_model_request_parses_openai_compatible_response | tests/test_llm_and_cli.py:44-65 | Not documented |
-| class FakeResponse | tests/test_llm_and_cli.py:50-54 | Not documented |
-| function __enter__ | tests/test_llm_and_cli.py:51-52 | Not documented |
-| function __exit__ | tests/test_llm_and_cli.py:53-54 | Not documented |
-| function test_cli_static_end_to_end_writes_report | tests/test_llm_and_cli.py:68-79 | Not documented |
-| function test_cli_ai_mode_requires_configuration | tests/test_llm_and_cli.py:82-90 | Not documented |
-| function test_config_requires_base_url_and_model | tests/test_llm_and_cli.py:93-97 | Not documented |
+| function test_context_is_bounded_and_does_not_include_env | tests/test_llm_and_cli.py:22-35 | Not documented |
+| function test_model_response_schema_and_malformed_response | tests/test_llm_and_cli.py:38-47 | Not documented |
+| function test_model_request_parses_openai_compatible_response | tests/test_llm_and_cli.py:50-71 | Not documented |
+| class FakeResponse | tests/test_llm_and_cli.py:56-60 | Not documented |
+| function __enter__ | tests/test_llm_and_cli.py:57-58 | Not documented |
+| function __exit__ | tests/test_llm_and_cli.py:59-60 | Not documented |
+| function test_grounding_filter_removes_contradictory_and_unsupported_model_claims | tests/test_llm_and_cli.py:74-142 | Not documented |
+| function test_grounding_filter_rejects_a_direct_symbol_file_mismatch | tests/test_llm_and_cli.py:145-170 | Not documented |
+| function test_cli_static_end_to_end_writes_report | tests/test_llm_and_cli.py:173-184 | Not documented |
+| function test_cli_ai_mode_requires_configuration | tests/test_llm_and_cli.py:187-195 | Not documented |
+| function test_config_requires_base_url_and_model | tests/test_llm_and_cli.py:198-202 | Not documented |
 | function make_zip | tests/test_repository.py:13-18 | Not documented |
 | function test_parse_github_url_accepts_only_public_repo_shape | tests/test_repository.py:21-29 | Not documented |
 | function test_zip_extraction_and_public_repo_loader_mock | tests/test_repository.py:32-47 | Not documented |
@@ -212,8 +219,8 @@ Manifest entries prove that a dependency is declared, not that the analyzer conf
 The following command references were found in inspected documentation or common configuration files. They were not executed.
 
 - README.md:52: python -m pip install -e ".[test]"
-- README.md:203: python -m pip install -e ".[test]"
-- README.md:204: python -m pytest -q
+- README.md:208: python -m pip install -e ".[test]"
+- README.md:209: python -m pytest -q
 - pyproject.toml:30: test = ["pytest>=8.0"]
 - pyproject.toml:38: [tool.pytest.ini_options]
 - .github/workflows/tests.yml:23: run: python -m pip install -e ".[test]"
@@ -225,9 +232,9 @@ The following command references were found in inspected documentation or common
 - examples/toy-python-project/README.md:17: python -m pytest -q
 - examples/toy-python-project/README.md:19: The example intentionally has no third-party runtime dependencies. The optional test dependency installs pytest. Its source uses the src layout, so install it before running the command or importing the package in tests.
 - examples/toy-python-project/pyproject.toml:12: test = ["pytest>=8"]
-- examples/verification/README.md:86: python -m pip install -e ".[test]"
-- examples/verification/README.md:88: python -m pytest -v
-- examples/verification/README.md:89: PYTHONPATH=examples/toy-python-project/src python -m pytest -v examples/toy-python-project/tests
+- examples/verification/README.md:88: python -m pip install -e ".[test]"
+- examples/verification/README.md:90: python -m pytest -v
+- examples/verification/README.md:91: PYTHONPATH=examples/toy-python-project/src python -m pytest -v examples/toy-python-project/tests
 
 ## 8. Detected test paths
 
