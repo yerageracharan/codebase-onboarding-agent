@@ -85,7 +85,7 @@ def main() -> None:
         f"- Source commit: {os.getenv('GITHUB_SHA', 'local working tree')}",
         "- Static-only analyzed target: examples/toy-python-project.",
         "- Live GitHub test: downloaded public repository ZIP and generated live-github-report.md, if the workflow passed.",
-        "- Real model test: local Ollama qwen2.5:1.5b via OpenAI-compatible /v1/chat/completions, if the workflow passed.",
+        "- Real model test: local Ollama qwen2.5:0.5b via OpenAI-compatible /v1/chat/completions, if the workflow passed.",
         "- AI-enhanced report: toy-taskboard-ai-report.md, produced by the CLI after a real model request.",
         "- The analyzer does not execute target code. The included synthetic example tests and CLI are run separately by this workflow.",
         "- The agent test suite and example-project tests are separate runs.",

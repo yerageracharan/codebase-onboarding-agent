@@ -12,7 +12,7 @@ class ModelConfig:
     base_url: str
     model: str
     api_key: str | None = None
-    timeout_seconds: float = 45.0
+    timeout_seconds: float = 120.0
 
     @classmethod
     def from_env(cls) -> "ModelConfig | None":

@@ -46,6 +46,8 @@ def test_model_request_parses_openai_compatible_response(tmp_path: Path) -> None
             self.close()
 
     cfg = ModelConfig("http://127.0.0.1:11434/v1", "test-model")
+    assert cfg.timeout_seconds == 120.0
+    assert cfg.endpoint == "http://127.0.0.1:11434/v1/chat/completions"
     with patch("codebase_onboarding_agent.llm.urllib.request.urlopen", return_value=FakeResponse(payload)):
         actual = analyze_with_model(inv, cfg)
     assert actual["overview"] == output["overview"]
