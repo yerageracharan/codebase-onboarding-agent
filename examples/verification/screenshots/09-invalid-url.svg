@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="261" viewBox="0 0 1440 261">
+<rect width="1440" height="261" fill="#eaf0f7"/>
+<rect x="18" y="18" width="1404" height="225" rx="18" fill="#0b1728" stroke="#263b54" stroke-width="2"/>
+<path d="M18 36 Q18 18 36 18 H1404 Q1422 18 1422 36 V76 H18 Z" fill="#1d2c42"/>
+<circle cx="47" cy="47" r="8" fill="#ff6159"/><circle cx="74" cy="47" r="8" fill="#ffbd2e"/><circle cx="101" cy="47" r="8" fill="#28c840"/>
+<text x="132" y="54" class="window">Invalid URL rejection</text>
+<text x="40" y="100" class="command">$ codebase-onboard https://example.com/not-a-github-repo --static-only</text><text x="40" y="126" class="out">Repository error: Only public repository URLs in the form https://github.com/OWNER/REPOSITORY are</text><text x="40" y="153" class="out">  supported. Do not pass a file URL, private URL, token, or query string.</text><text x="40" y="180" class="out">exit_code=2</text>
+<style>.window{font:600 20px Arial,sans-serif;fill:#e2ebf6}.command{font:600 18px monospace;fill:#6ee7b7}.out{font:17px monospace;fill:#edf4ff}</style></svg>

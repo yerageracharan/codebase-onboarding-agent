@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="423" viewBox="0 0 1440 423">
+<rect width="1440" height="423" fill="#eaf0f7"/>
+<rect x="18" y="18" width="1404" height="387" rx="18" fill="#0b1728" stroke="#263b54" stroke-width="2"/>
+<path d="M18 36 Q18 18 36 18 H1404 Q1422 18 1422 36 V76 H18 Z" fill="#1d2c42"/>
+<circle cx="47" cy="47" r="8" fill="#ff6159"/><circle cx="74" cy="47" r="8" fill="#ffbd2e"/><circle cx="101" cy="47" r="8" fill="#28c840"/>
+<text x="132" y="54" class="window">Tiny Taskboard tests</text>
+<text x="40" y="100" class="command">$ PYTHONPATH=examples/toy-python-project/src python -m pytest -v examples/toy-python-project/tests</text><text x="40" y="126" class="out">============================= test session starts ==============================</text><text x="40" y="153" class="out">platform linux -- Python 3.11.17, pytest-9.2.0, pluggy-1.7.0</text><text x="40" y="180" class="out">rootdir: /home/runner/work/codebase-onboarding-agent/codebase-onboarding-agent</text><text x="40" y="207" class="out">configfile: pyproject.toml</text><text x="40" y="234" class="out">collected 2 items</text><text x="40" y="261" class="out"></text><text x="40" y="288" class="out">examples/toy-python-project/tests/test_app.py ..                         [100%]</text><text x="40" y="315" class="out"></text><text x="40" y="342" class="out">============================== 2 passed in 0.01s ===============================</text>
+<style>.window{font:600 20px Arial,sans-serif;fill:#e2ebf6}.command{font:600 18px monospace;fill:#6ee7b7}.out{font:17px monospace;fill:#edf4ff}</style></svg>

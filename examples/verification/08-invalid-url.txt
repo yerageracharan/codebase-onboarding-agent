@@ -1,0 +1,2 @@
+Repository error: Only public repository URLs in the form https://github.com/OWNER/REPOSITORY are supported. Do not pass a file URL, private URL, token, or query string.
+exit_code=2

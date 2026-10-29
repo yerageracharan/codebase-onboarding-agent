@@ -1,0 +1,23 @@
+usage: codebase-onboard [-h] [--output OUTPUT] [--with-ai | --static-only]
+                        [--version]
+                        source
+
+Create a beginner-friendly, evidence-backed Markdown guide to a local or
+public GitHub repository.
+
+positional arguments:
+  source                Local repository directory or public
+                        https://github.com/OWNER/REPOSITORY URL
+
+options:
+  -h, --help            show this help message and exit
+  --output OUTPUT, -o OUTPUT
+                        Markdown report path (default: onboarding-report.md)
+  --with-ai             Enhance the static report using a configured OpenAI-
+                        compatible model endpoint
+  --static-only         Run deterministic static analysis only (the default)
+  --version             show program's version number and exit
+
+Privacy: static-only mode is the default and makes no model API calls. With
+--with-ai, selected redacted source excerpts are sent to the endpoint you
+configured. The target repository is never executed.

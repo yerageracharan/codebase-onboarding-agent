@@ -1,0 +1,2 @@
+Report written: /home/runner/work/codebase-onboarding-agent/codebase-onboarding-agent/examples/verification/toy-taskboard-report.md
+Mode: static-only; files inspected: 6; skipped: 0
