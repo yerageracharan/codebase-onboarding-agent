@@ -8,7 +8,7 @@
 
 ## 1. Thirty-second overview
 
-This repository contains a small command-line application called Tiny Taskboard, designed to demonstrate the Codebase Onboarding Agent's functionality.
+This repository contains a small command-line application called Tiny Taskboard, designed to demonstrate how the Codebase Onboarding Agent works.
 
 ## AI-assisted interpretation
 
@@ -16,47 +16,45 @@ This repository contains a small command-line application called Tiny Taskboard,
 
 ### Project interpretation
 
-This repository contains a small command-line application called Tiny Taskboard, designed to demonstrate the Codebase Onboarding Agent's functionality.
+This repository contains a small command-line application called Tiny Taskboard, designed to demonstrate how the Codebase Onboarding Agent works.
 
 ### Architecture summary
 
-The project is structured with a `src` directory containing the application code, and a `tests` directory for unit tests. The `pyproject.toml` file specifies the build backend and project metadata.
+The project is structured with a `src` directory containing the application logic and a `tests` directory for unit tests. The `pyproject.toml` file specifies the build system and project metadata.
 
 ### Execution walkthrough
 
 - Navigate to the project directory: `cd /home/runner/work/codebase-onboarding-agent/codebase-onboarding-agent/examples/toy-python-project`
-- Install the project in editable mode: `python -m pip install -e .[test]`
 - Run the command registered in `pyproject.toml`: `taskboard`
 - Run the tests: `python -m pytest -q`
 
 ### Design observations
 
-- The project uses a `pyproject.toml` file to define build requirements and project metadata, ensuring the project is self-contained and easy to install.
-- The `src` directory is used for the application code, while the `tests` directory contains unit tests, demonstrating the project's modular structure.
+- The project uses a `pyproject.toml` file to define build system and project metadata, ensuring consistent project configuration.
+- The `src` directory is used for the application logic, while the `tests` directory contains unit tests, demonstrating the project's structure and testing approach.
 
 ### Grounding checks
 
-The deterministic validator removed 1 model claim(s) that conflicted with the scanned evidence:
+The deterministic validator removed 3 model claim(s) that conflicted with the scanned evidence:
 
+- Removed one execution walkthrough item because it drops the quoting used by the documented optional-dependency install command.
 - Removed one unknowns item because it claims source code is missing even though source files are present in the inventory.
+- Removed one model-suggested contribution because it attributes project metadata to src/taskboard/__init__.py, but no metadata/version declaration is visible in that file.
 
 ### Model-suggested contribution ideas
 
-- **README.md** — /home/runner/work/codebase-onboarding-agent/codebase-onboarding-agent/examples/toy-python-project/README.md
-  - Why: Provides instructions on how to run the project and install it in editable mode.
-  - Verification idea: The README.md file is present and contains the necessary instructions.
-- **pyproject.toml** — /home/runner/work/codebase-onboarding-agent/codebase-onboarding-agent/examples/toy-python-project/pyproject.toml
-  - Why: Specifies the build backend, project metadata, and optional dependencies, ensuring the project is self-contained and easy to install.
-  - Verification idea: The pyproject.toml file is present and contains the required metadata and dependencies.
-- **src/taskboard/__init__.py** — /home/runner/work/codebase-onboarding-agent/codebase-onboarding-agent/examples/toy-python-project/src/taskboard/__init__.py
-  - Why: Defines the package and provides a brief description.
-  - Verification idea: The `__init__.py` file is present and contains the package definition.
-- **src/taskboard/app.py** — /home/runner/work/codebase-onboarding-agent/codebase-onboarding-agent/examples/toy-python-project/src/taskboard/app.py
-  - Why: Contains the core logic for summarizing tasks, demonstrating the project's functionality.
-  - Verification idea: The `app.py` file is present and contains the summary logic.
-- **src/taskboard/cli.py** — /home/runner/work/codebase-onboarding-agent/codebase-onboarding-agent/examples/toy-python-project/src/taskboard/cli.py
-  - Why: Defines the command-line entry point for the project, demonstrating the project's modular structure.
-  - Verification idea: The `cli.py` file is present and contains the command-line entry point.
+- **README.md** — README.md
+  - Why: Provides instructions on how to run the project and install dependencies.
+  - Verification idea: The README.md file is present and contains the necessary information.
+- **pyproject.toml** — pyproject.toml
+  - Why: Defines the build system and project metadata, ensuring project consistency.
+  - Verification idea: The pyproject.toml file is present and contains the required metadata.
+- **src/taskboard/app.py** — src/taskboard/app.py
+  - Why: Contains the core logic for the Tiny Taskboard demo, including task summary functionality.
+  - Verification idea: The app.py file is present and contains the necessary logic for the demo.
+- **src/taskboard/cli.py** — src/taskboard/cli.py
+  - Why: Contains the command-line entry point for the Tiny Taskboard demo, responsible for running the application logic.
+  - Verification idea: The cli.py file is present and contains the necessary logic for the demo.
 
 ## 2. Scope and repository map
 
@@ -90,7 +88,7 @@ Structural inventory map (not a verified runtime call graph):
 
 ### Model-generated architecture explanation
 
-The project is structured with a `src` directory containing the application code, and a `tests` directory for unit tests. The `pyproject.toml` file specifies the build backend and project metadata.
+The project is structured with a `src` directory containing the application logic and a `tests` directory for unit tests. The `pyproject.toml` file specifies the build system and project metadata.
 
 ### Important files
 
