@@ -4,5 +4,5 @@
 <path d="M18 36 Q18 18 36 18 H1404 Q1422 18 1422 36 V76 H18 Z" fill="#1d2c42"/>
 <circle cx="47" cy="47" r="8" fill="#ff6159"/><circle cx="74" cy="47" r="8" fill="#ffbd2e"/><circle cx="101" cy="47" r="8" fill="#28c840"/>
 <text x="132" y="54" class="window">Live public GitHub ZIP download</text>
-<text x="40" y="100" class="command">$ codebase-onboard https://github.com/yerageracharan/codebase-onboarding-agent --static-only</text><text x="40" y="126" class="out">Report written: /home/runner/work/codebase-onboarding-agent/codebase-onboarding-</text><text x="40" y="153" class="out">  agent/examples/verification/live-github-report.md</text><text x="40" y="180" class="out">Mode: static-only; files inspected: 44; skipped: 31</text>
+<text x="40" y="100" class="command">$ codebase-onboard https://github.com/yerageracharan/codebase-onboarding-agent --static-only</text><text x="40" y="126" class="out">Report written: /home/runner/work/codebase-onboarding-agent/codebase-onboarding-</text><text x="40" y="153" class="out">  agent/examples/verification/live-github-report.md</text><text x="40" y="180" class="out">Mode: static-only; files inspected: 49; skipped: 34</text>
 <style>.window{font:600 20px Arial,sans-serif;fill:#e2ebf6}.command{font:600 18px monospace;fill:#6ee7b7}.out{font:17px monospace;fill:#edf4ff}</style></svg>

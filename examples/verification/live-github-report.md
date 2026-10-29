@@ -2,8 +2,8 @@
 
 **Source:** https://github.com/yerageracharan/codebase-onboarding-agent (downloaded ZIP; branch/revision not pinned)  
 **Mode:** static-only  
-**Readable files inspected:** 44  
-**Paths skipped:** 31  
+**Readable files inspected:** 49  
+**Paths skipped:** 34  
 **Safety:** the analyzer did not execute repository source files, install scripts, or target tests.
 
 ## 1. Thirty-second overview
@@ -16,8 +16,8 @@ Static-only mode does not guess the product purpose from the repository name.
 ## 2. Scope and repository map
 
 - Source: https://github.com/yerageracharan/codebase-onboarding-agent (downloaded ZIP; branch/revision not pinned)
-- Included files: 44
-- Skipped paths: 31
+- Included files: 49
+- Skipped paths: 34
 - A GitHub URL is downloaded as a ZIP archive; this version does not pin a branch or commit.
 - Commands listed below are evidence found in source files, not commands executed by this analyzer.
 
@@ -41,12 +41,17 @@ Static-only mode does not guess the product purpose from the repository name.
       └── examples/verification/01-version.txt
       └── examples/verification/02-help.txt
       └── examples/verification/03-toy-run.txt
+      └── examples/verification/04-live-github-run.txt
       └── examples/verification/05-test-results.txt
       └── examples/verification/06-toy-project-tests.txt
       └── examples/verification/07-toy-project-run.txt
       └── examples/verification/08-invalid-url.txt
+      └── examples/verification/09-ollama-model.txt
+      └── examples/verification/10-ai-model-run.txt
       └── examples/verification/README.md
+      └── examples/verification/live-github-report.md
       └── examples/verification/run-metadata.md
+      └── examples/verification/toy-taskboard-ai-report.md
       └── examples/verification/toy-taskboard-report.md
       └── pyproject.toml
       └── references/analysis-output-template.md
@@ -79,7 +84,7 @@ Structural inventory map (not a verified runtime call graph):
     |-- Entry-point evidence: examples/toy-python-project/pyproject.toml / examples/toy-python-project/src/taskboard/app.py / examples/toy-python-project/src/taskboard/cli.py
     |-- Readable source files: 19
     |-- Likely test paths: 4
-    |-- Skipped paths: 31
+    |-- Skipped paths: 34
 
 ### Important files
 
@@ -139,9 +144,9 @@ Symbols found by Python syntax-tree parsing. A symbol location does not prove th
 | function _parse_manifests | src/codebase_onboarding_agent/inventory.py:161-238 | Not documented |
 | function build_inventory | src/codebase_onboarding_agent/inventory.py:241-280 | Build an evidence inventory without executing target code. |
 | class ModelError | src/codebase_onboarding_agent/llm.py:18-19 | Raised when an optional model call fails or returns unusable data. |
-| function build_context | src/codebase_onboarding_agent/llm.py:22-51 | Serialize bounded, redacted source excerpts with line numbers. |
-| function _extract_json | src/codebase_onboarding_agent/llm.py:54-77 | Not documented |
-| function analyze_with_model | src/codebase_onboarding_agent/llm.py:80-141 | Ask a configured model for a source-grounded interpretation of the inventory. |
+| function build_context | src/codebase_onboarding_agent/llm.py:22-86 | Serialize bounded, redacted source excerpts with line numbers. |
+| function _extract_json | src/codebase_onboarding_agent/llm.py:89-126 | Not documented |
+| function analyze_with_model | src/codebase_onboarding_agent/llm.py:129-197 | Ask a configured model for a source-grounded interpretation of the inventory. |
 | function _cell | src/codebase_onboarding_agent/report.py:14-15 | Not documented |
 | function _model_text | src/codebase_onboarding_agent/report.py:18-22 | Not documented |
 | function _file_role | src/codebase_onboarding_agent/report.py:25-41 | Not documented |
@@ -162,15 +167,15 @@ Symbols found by Python syntax-tree parsing. A symbol location does not prove th
 | function test_inventory_excludes_secret_files_and_redacts_secret_values | tests/test_inventory.py:45-54 | Not documented |
 | function test_entrypoint_detection_uses_real_guard_and_manifest | tests/test_inventory.py:57-63 | Not documented |
 | function test_report_is_static_and_evidence_forward | tests/test_inventory.py:66-74 | Not documented |
-| function test_context_is_bounded_and_does_not_include_env | tests/test_llm_and_cli.py:16-23 | Not documented |
-| function test_model_response_schema_and_malformed_response | tests/test_llm_and_cli.py:26-33 | Not documented |
-| function test_model_request_parses_openai_compatible_response | tests/test_llm_and_cli.py:36-53 | Not documented |
-| class FakeResponse | tests/test_llm_and_cli.py:42-46 | Not documented |
-| function __enter__ | tests/test_llm_and_cli.py:43-44 | Not documented |
-| function __exit__ | tests/test_llm_and_cli.py:45-46 | Not documented |
-| function test_cli_static_end_to_end_writes_report | tests/test_llm_and_cli.py:56-67 | Not documented |
-| function test_cli_ai_mode_requires_configuration | tests/test_llm_and_cli.py:70-78 | Not documented |
-| function test_config_requires_base_url_and_model | tests/test_llm_and_cli.py:81-85 | Not documented |
+| function test_context_is_bounded_and_does_not_include_env | tests/test_llm_and_cli.py:16-29 | Not documented |
+| function test_model_response_schema_and_malformed_response | tests/test_llm_and_cli.py:32-41 | Not documented |
+| function test_model_request_parses_openai_compatible_response | tests/test_llm_and_cli.py:44-65 | Not documented |
+| class FakeResponse | tests/test_llm_and_cli.py:50-54 | Not documented |
+| function __enter__ | tests/test_llm_and_cli.py:51-52 | Not documented |
+| function __exit__ | tests/test_llm_and_cli.py:53-54 | Not documented |
+| function test_cli_static_end_to_end_writes_report | tests/test_llm_and_cli.py:68-79 | Not documented |
+| function test_cli_ai_mode_requires_configuration | tests/test_llm_and_cli.py:82-90 | Not documented |
+| function test_config_requires_base_url_and_model | tests/test_llm_and_cli.py:93-97 | Not documented |
 | function make_zip | tests/test_repository.py:13-18 | Not documented |
 | function test_parse_github_url_accepts_only_public_repo_shape | tests/test_repository.py:21-29 | Not documented |
 | function test_zip_extraction_and_public_repo_loader_mock | tests/test_repository.py:32-47 | Not documented |
@@ -294,6 +299,9 @@ A detected test file does not prove tests pass. No target test suite was run.
 | examples/verification/screenshots/07-toy-example-tests.svg | unsupported or likely binary file type |
 | examples/verification/screenshots/08-toy-example-run.svg | unsupported or likely binary file type |
 | examples/verification/screenshots/09-invalid-url.svg | unsupported or likely binary file type |
+| examples/verification/screenshots/10-live-github-download.svg | unsupported or likely binary file type |
+| examples/verification/screenshots/11-real-model-request.svg | unsupported or likely binary file type |
+| examples/verification/screenshots/12-ai-enhanced-report.svg | unsupported or likely binary file type |
 
 ## 11. Suggested next step
 
