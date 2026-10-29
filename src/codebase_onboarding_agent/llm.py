@@ -231,7 +231,7 @@ def _grounding_issue(text: str, inventory: Inventory, path_hint: str | None = No
             return "claims only a subset of files is present despite a larger deterministic file inventory"
 
     # Check direct, explicit file-to-symbol assignments using parsed AST locations.
-    sentences = re.split(r"(?<=[.!?])\s+", text)
+    sentences = re.split(r"(?<=[.!?])\s+(?=[A-Z])", text)
     for sentence in sentences:
         paths, unknown_in_sentence = _model_path_mentions(sentence, inventory)
         if unknown_in_sentence:
