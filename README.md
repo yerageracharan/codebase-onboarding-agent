@@ -104,7 +104,7 @@ Local directory or public GitHub URL
   -> manifest parsing and Python AST symbol extraction
   -> entry-point candidates and evidence inventory
   -> Markdown report
-  -> optional AI interpretation when explicitly requested
+  -> optional AI interpretation when explicitly requested\n  -> deterministic grounding checks over generated claims\n  -> Markdown report (or static-only fallback if all AI content is rejected)
 ~~~
 
 ~~~mermaid
@@ -184,6 +184,8 @@ codebase-onboard . --with-ai --output onboarding-report.md
 Use the exact model name your local server exposes. This tool does not download a model or claim that your endpoint is running. Hosted services may require CODEBASE_AGENT_API_KEY. If your base URL already ends in /chat/completions, it is used as-is; otherwise the client appends /chat/completions.
 
 AI mode sends selected, bounded, redacted text excerpts from the analyzed repository to your configured endpoint. Do not use it with private or confidential source unless you are authorized to share that source with the provider. An AI-generated explanation is an interpretation, not ground truth. Review claims against the file paths and line numbers in the report.
+
+Before rendering AI text, the CLI applies deterministic consistency checks for detectable contradictions: file paths absent from the scanned inventory, claims that source or test files are missing when they were found, explicit symbol-to-file mismatches, and unsupported project-metadata claims assigned to ordinary source files. Flagged items are removed and the report records that filtering. If every model-generated item is rejected, the CLI writes a static-only report instead of publishing the invalid explanation. These checks are intentionally partial; they cannot prove all semantic claims true, so human review is still required.
 
 ![Declared dependencies and their evidence](assets/readme-10-dependency-layers.svg)
 
@@ -273,7 +275,7 @@ Known boundaries:
 - Dependency extraction is manifest-based and not a complete lockfile or transitive dependency resolver.
 - Secret detection is pattern-based and may miss sensitive values.
 - Model compatibility depends on the endpoint's OpenAI-compatible response format.
-- Model output may be wrong and requires human review.
+- Model output may contain undetected semantic errors; grounding checks catch only defined classes of contradiction and human review remains required.
 - Tests of this tool do not prove the target repository works.
 
 ## Troubleshooting
