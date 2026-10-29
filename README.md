@@ -2,18 +2,25 @@
 
 <img src="assets/hero.svg" alt="Codebase Onboarding Agent" width="820" />
 
-# Codebase Onboarding Agent
+<h1>Codebase Onboarding Agent</h1>
+<p><strong>Understand an unfamiliar codebase before you change it.</strong></p>
+<p>A Python CLI that scans local projects or public GitHub repositories and creates an evidence-backed onboarding report.</p>
 
-**Understand an unfamiliar codebase before you change it.**
+<p>
+  <a href="https://github.com/yerageracharan/codebase-onboarding-agent/actions/workflows/tests.yml"><img src="https://github.com/yerageracharan/codebase-onboarding-agent/actions/workflows/tests.yml/badge.svg?branch=main" alt="Tests" /></a>
+  <a href="https://github.com/yerageracharan/codebase-onboarding-agent/actions/workflows/verification-demo.yml"><img src="https://github.com/yerageracharan/codebase-onboarding-agent/actions/workflows/verification-demo.yml/badge.svg?branch=main" alt="Verification demo" /></a>
+  <img src="https://img.shields.io/badge/python-3.11%2B-3776AB" alt="Python 3.11 or newer" />
+  <img src="https://img.shields.io/badge/license-MIT-green" alt="MIT license" />
+</p>
 
-A Python CLI that scans a local project or public GitHub repository and creates an evidence-backed onboarding report: what files exist, where execution may start, which Python symbols were detected, what commands are documented, and where a beginner can make a small first contribution.
-
-[![Tests](https://github.com/yerageracharan/codebase-onboarding-agent/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/yerageracharan/codebase-onboarding-agent/actions/workflows/tests.yml)
-[![Verification demo](https://github.com/yerageracharan/codebase-onboarding-agent/actions/workflows/verification-demo.yml/badge.svg?branch=main)](https://github.com/yerageracharan/codebase-onboarding-agent/actions/workflows/verification-demo.yml)
-![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-3776AB)
-![License: MIT](https://img.shields.io/badge/license-MIT-green)
-
-[Quick start](#quick-start) · [Use cases](#use-cases) · [Screenshots](#verified-run-screenshots) · [Example report](examples/reports/sample-onboarding-report.md) · [Project map](#repository-map) · [Security and limits](#security-and-limitations)
+<p>
+  <a href="#quick-start">Quick start</a> ·
+  <a href="#use-cases">Use cases</a> ·
+  <a href="#verified-run-screenshots">Screenshots</a> ·
+  <a href="examples/reports/sample-onboarding-report.md">Example report</a> ·
+  <a href="#repository-map">Project map</a> ·
+  <a href="#security-and-limitations">Security &amp; limits</a>
+</p>
 
 </div>
 
