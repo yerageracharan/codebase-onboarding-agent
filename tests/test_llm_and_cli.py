@@ -98,8 +98,14 @@ def test_grounding_filter_removes_contradictory_and_unsupported_model_claims(tmp
     model_response = {
         "overview": "A tiny command-line task summary application.",
         "architecture_summary": "The source is organized in src and tests, with a declared CLI entry point.",
-        "execution_walkthrough": ["Run the taskboard command after installation."],
-        "notable_designs": [],
+        "execution_walkthrough": [
+            "Run the taskboard command after installation.",
+            "Install the project using pip -m pip install -e .[test].",
+        ],
+        "notable_designs": [
+            "The src directory includes __init__.py, app.py, and cli.py files.",
+            "The __init__.py file serves as a marker for the src directory.",
+        ],
         "unknowns": [
             "The project's source code is not included in the repository; only README.md and pyproject.toml are present.",
             "The project's unit tests are not included; only tests/test_app.py is present.",
@@ -138,8 +144,10 @@ def test_grounding_filter_removes_contradictory_and_unsupported_model_claims(tmp
     assert filtered["overview"] == model_response["overview"]
     assert filtered["architecture_summary"] == model_response["architecture_summary"]
     assert filtered["unknowns"] == ["Runtime behavior was not executed by static analysis."]
+    assert filtered["execution_walkthrough"] == ["Run the taskboard command after installation."]
+    assert filtered["notable_designs"] == []
     assert [item["title"] for item in filtered["contributions"]] == ["Add a focused edge-case test"]
-    assert len(filtered["_grounding_warnings"]) == 5
+    assert len(filtered["_grounding_warnings"]) == 8
 
 
 def test_grounding_filter_rejects_a_direct_symbol_file_mismatch(tmp_path: Path) -> None:
