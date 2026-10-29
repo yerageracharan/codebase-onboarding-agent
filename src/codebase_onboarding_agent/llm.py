@@ -263,7 +263,7 @@ def _grounding_issue(text: str, inventory: Inventory, path_hint: str | None = No
         if init_marker_claim:
             init_paths = [p for p in paths if Path(p).name == "__init__.py"]
             if any(Path(p).parent.as_posix() != "src" for p in init_paths):
-                return "describes a nested package __init__.py as a marker for the src directory"
+                return "assigns a nested package initializer to src rather than to its actual parent package"
 
         for symbol in inventory.symbols:
             if len(symbol.name) < 5:
