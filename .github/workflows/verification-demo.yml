@@ -57,6 +57,8 @@ jobs:
           ollama pull qwen2.5:1.5b
           echo "CODEBASE_AGENT_BASE_URL=http://127.0.0.1:11434/v1" >> "$GITHUB_ENV"
           echo "CODEBASE_AGENT_MODEL=qwen2.5:1.5b" >> "$GITHUB_ENV"
+          export CODEBASE_AGENT_BASE_URL=http://127.0.0.1:11434/v1
+          export CODEBASE_AGENT_MODEL=qwen2.5:1.5b
           {
             echo "Provider: Ollama"
             echo "Endpoint: http://127.0.0.1:11434/v1"

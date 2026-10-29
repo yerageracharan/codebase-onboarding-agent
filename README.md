@@ -212,7 +212,7 @@ Continuous integration is configured in .github/workflows/tests.yml for Python 3
 
 ## Reproducible example run and screenshots
 
-A repeatable verification workflow installs the CLI, analyzes the included Tiny Taskboard project, captures the generated report, runs the agent tests and sample project tests separately, and publishes screenshots of the actual output. See the [verification walkthrough and screenshot gallery](examples/verification/README.md). The workflow does not call a real model provider or execute target code as part of analysis.
+A repeatable verification workflow installs the CLI, analyzes Tiny Taskboard, downloads this public repository through the GitHub ZIP endpoint, sends a real request to a local Ollama model through an OpenAI-compatible endpoint, and captures the resulting reports, logs, and screenshots. See the [verification walkthrough and screenshot gallery](examples/verification/README.md). The analyzer does not execute the target project's source.
 
 ## First contributions
 
