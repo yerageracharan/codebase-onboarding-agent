@@ -102,7 +102,7 @@ Structural inventory map (not a verified runtime call graph):
 
 | File | Observed role or filename-based hint | Lines |
 |---|---|---:|
-| .github/workflows/tests.yml | Continuous-integration or automation configuration. | 45 |
+| .github/workflows/tests.yml | Continuous-integration or automation configuration. | 46 |
 | .github/workflows/verification-demo.yml | Continuous-integration or automation configuration. | 109 |
 | README.md | Documentation; use it to understand the intended purpose and documented commands. | 286 |
 | docs/README.md | Documentation; use it to understand the intended purpose and documented commands. | 19 |
@@ -241,8 +241,8 @@ The following command references were found in inspected documentation or common
 - README.md:262: python -m pytest -q
 - pyproject.toml:30: test = ["pytest>=8.0"]
 - pyproject.toml:38: [tool.pytest.ini_options]
-- .github/workflows/tests.yml:43: run: python -m pip install -e ".[test]"
-- .github/workflows/tests.yml:45: run: python -m pytest -q
+- .github/workflows/tests.yml:44: run: python -m pip install -e ".[test]"
+- .github/workflows/tests.yml:46: run: python -m pytest -q
 - .github/workflows/verification-demo.yml:25: run: python -m pip install -e ".[test]"
 - .github/workflows/verification-demo.yml:40: run: python -m pytest -v | tee examples/verification/05-test-results.txt
 - .github/workflows/verification-demo.yml:43: PYTHONPATH=examples/toy-python-project/src python -m pytest -v examples/toy-python-project/tests | tee examples/verification/06-toy-project-tests.txt
