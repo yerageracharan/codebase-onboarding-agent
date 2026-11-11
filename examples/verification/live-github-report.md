@@ -164,10 +164,10 @@ Symbols found by Python syntax-tree parsing. A symbol location does not prove th
 | function _ai_sections | src/codebase_onboarding_agent/report.py:67-112 | Not documented |
 | function generate_report | src/codebase_onboarding_agent/report.py:115-260 | Not documented |
 | class RepositoryError | src/codebase_onboarding_agent/repository.py:22-23 | Raised when a repository source cannot safely be opened. |
-| function parse_github_url | src/codebase_onboarding_agent/repository.py:26-41 | Parse a narrowly supported public GitHub repository URL. |
-| function _read_limited | src/codebase_onboarding_agent/repository.py:44-55 | Not documented |
-| function _safe_extract_zip | src/codebase_onboarding_agent/repository.py:58-101 | Not documented |
-| function open_repository | src/codebase_onboarding_agent/repository.py:105-140 | Yield repository root and source description; never execute repository content. |
+| function parse_github_url | src/codebase_onboarding_agent/repository.py:26-53 | Parse a narrowly supported public GitHub repository URL. |
+| function _read_limited | src/codebase_onboarding_agent/repository.py:55-66 | Not documented |
+| function _safe_extract_zip | src/codebase_onboarding_agent/repository.py:69-112 | Not documented |
+| function open_repository | src/codebase_onboarding_agent/repository.py:116-151 | Yield repository root and source description; never execute repository content. |
 | function is_sensitive_path | src/codebase_onboarding_agent/security.py:32-44 | Return True for files that should never be read into report/model context. |
 | function is_excluded_directory | src/codebase_onboarding_agent/security.py:47-48 | Not documented |
 | function redact_secrets | src/codebase_onboarding_agent/security.py:51-58 | Redact common high-confidence secret patterns from text before analysis. |
@@ -195,6 +195,7 @@ Symbols found by Python syntax-tree parsing. A symbol location does not prove th
 | function __exit__ | tests/test_repository.py:41-42 | Not documented |
 | function test_zip_traversal_is_rejected | tests/test_repository.py:50-53 | Not documented |
 | function test_open_repository_rejects_non_directory | tests/test_repository.py:56-61 | Not documented |
+| function test_parse_github_url_rejects_malformed_authorities_without_raising | tests/test_repository.py:64-69 | Not documented |
 
 ## 6. Dependencies and technology evidence
 
