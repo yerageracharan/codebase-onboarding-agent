@@ -2,7 +2,7 @@
 
 **Source:** https://github.com/yerageracharan/codebase-onboarding-agent (downloaded ZIP; branch/revision not pinned)  
 **Mode:** static-only  
-**Readable files inspected:** 61  
+**Readable files inspected:** 62  
 **Paths skipped:** 34  
 **Safety:** the analyzer did not execute repository source files, install scripts, or target tests.
 
@@ -16,7 +16,7 @@ Static-only mode does not guess the product purpose from the repository name.
 ## 2. Scope and repository map
 
 - Source: https://github.com/yerageracharan/codebase-onboarding-agent (downloaded ZIP; branch/revision not pinned)
-- Included files: 61
+- Included files: 62
 - Skipped paths: 34
 - A GitHub URL is downloaded as a ZIP archive; this version does not pin a branch or commit.
 - Commands listed below are evidence found in source files, not commands executed by this analyzer.
@@ -27,6 +27,7 @@ Static-only mode does not guess the product purpose from the repository name.
       └── .editorconfig
       └── .github/ISSUE_TEMPLATE/bug_report.yml
       └── .github/ISSUE_TEMPLATE/config.yml
+      └── .github/ISSUE_TEMPLATE/docs_report.yml
       └── .github/ISSUE_TEMPLATE/feature_request.yml
       └── .github/dependabot.yml
       └── .github/pull_request_template.md
