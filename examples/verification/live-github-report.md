@@ -104,7 +104,7 @@ Structural inventory map (not a verified runtime call graph):
 |---|---|---:|
 | .github/workflows/tests.yml | Continuous-integration or automation configuration. | 45 |
 | .github/workflows/verification-demo.yml | Continuous-integration or automation configuration. | 109 |
-| README.md | Documentation; use it to understand the intended purpose and documented commands. | 284 |
+| README.md | Documentation; use it to understand the intended purpose and documented commands. | 286 |
 | docs/README.md | Documentation; use it to understand the intended purpose and documented commands. | 19 |
 | examples/README.md | Documentation; use it to understand the intended purpose and documented commands. | 28 |
 | examples/toy-python-project/README.md | Documentation; use it to understand the intended purpose and documented commands. | 19 |
@@ -236,9 +236,9 @@ The following command references were found in inspected documentation or common
 - CONTRIBUTING.md:20: python -m pip install --upgrade pip
 - CONTRIBUTING.md:21: python -m pip install -e ".[test]"
 - CONTRIBUTING.md:27: python -m pytest -q
-- README.md:54: python -m pip install -e ".[test]"
-- README.md:259: python -m pip install -e ".[test]"
-- README.md:260: python -m pytest -q
+- README.md:56: python -m pip install -e ".[test]"
+- README.md:261: python -m pip install -e ".[test]"
+- README.md:262: python -m pytest -q
 - pyproject.toml:30: test = ["pytest>=8.0"]
 - pyproject.toml:38: [tool.pytest.ini_options]
 - .github/workflows/tests.yml:43: run: python -m pip install -e ".[test]"
