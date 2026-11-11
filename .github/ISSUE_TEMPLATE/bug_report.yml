@@ -1,0 +1,41 @@
+name: Bug report
+description: Report a reproducible onboarding-analysis defect.
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: "Use a synthetic repository fixture. Do not attach private source archives, credentials, or unredacted secrets."
+  - type: textarea
+    id: summary
+    attributes:
+      label: Problem
+      description: What failed or was misleading?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      description: Include a synthetic project layout and exact CLI command.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result and evidence
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result and redacted logs
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version / commit SHA
+  - type: input
+    id: python
+    attributes:
+      label: Python version and operating system
