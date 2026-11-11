@@ -90,7 +90,7 @@ jobs:
         run: python scripts/generate_verification_screenshots.py
       - name: Upload run evidence as a workflow artifact
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: codebase-onboarding-verification-${{ github.run_id }}
           path: examples/verification/
