@@ -28,6 +28,8 @@
 
 ## What it does
 
+**[Documentation map](docs/README.md)** · [Contribution guide](CONTRIBUTING.md) · [Security policy](SECURITY.md)
+
 Starting in a new repository can mean guessing which file matters, how a program starts, which libraries are actually declared, and where a beginner-sized change might fit. This tool builds a **static evidence map first** rather than inventing a runtime architecture.
 
 Given a local directory or a supported public GitHub repository URL, it can produce a Markdown report containing:
