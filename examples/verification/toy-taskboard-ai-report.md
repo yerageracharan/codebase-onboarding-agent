@@ -8,7 +8,7 @@
 
 ## 1. Thirty-second overview
 
-This repository contains a small command-line application called Tiny Taskboard, designed to demonstrate the Codebase Onboarding Agent's functionality.
+This repository is a small, command-line example project for the Codebase Onboarding Agent. It demonstrates the project's ability to ground explanations in files and includes a README, pyproject.toml, and two Python files.
 
 ## AI-assisted interpretation
 
@@ -16,50 +16,48 @@ This repository contains a small command-line application called Tiny Taskboard,
 
 ### Project interpretation
 
-This repository contains a small command-line application called Tiny Taskboard, designed to demonstrate the Codebase Onboarding Agent's functionality.
+This repository is a small, command-line example project for the Codebase Onboarding Agent. It demonstrates the project's ability to ground explanations in files and includes a README, pyproject.toml, and two Python files.
 
 ### Architecture summary
 
-The application is structured with a single package (`taskboard`) and a single script (`taskboard`). The project uses a `pyproject.toml` file for metadata and a `README.md` for documentation.
+The project is organized into a single package with a single script, `taskboard`, which is the entry point for the command-line application. The project uses the `taskboard` package for its scripts and the `pytest` package for optional tests.
 
 ### Execution walkthrough
 
-- Open a terminal in the `codebase-onboarding-agent/examples/toy-python-project` folder.
-- Run the command registered in `pyproject.toml`: `taskboard`.
-- Run the tests: `python -m pytest -q`.
+- Run the command registered in `pyproject.toml` by executing `taskboard`.
+- Run the tests by executing `python -m pytest -q`.
 
 ### Design observations
 
-- The project uses a single package and script, which simplifies the structure and makes it easier to manage dependencies.
-- The `pyproject.toml` file is used for project metadata, including the name, version, and dependencies, which is a common practice in Python projects.
+- The project's structure is simple, with a single package and script, making it easy to understand and navigate.
+- The use of `pytest` for optional tests demonstrates the project's flexibility in handling optional dependencies.
 
 ### Model-reported unknowns
 
-- The project does not include any third-party runtime dependencies, which is unusual for a small project.
+- The project's structure and scripts are not documented in the repository, only the README and pyproject files provide some information.
 
 ### Grounding checks
 
-The deterministic validator removed 1 model claim(s) that conflicted with the scanned evidence:
+The deterministic validator removed 3 model claim(s) that conflicted with the scanned evidence:
 
 - Removed one execution walkthrough item because it drops the quoting used by the documented optional-dependency install command.
+- Removed one unknowns item because it claims source code is missing even though source files are present in the inventory.
+- Removed one model-suggested contribution because it assigns symbol summarize_tasks to src/taskboard/cli.py, but the AST locates it in src/taskboard/app.py.
 
 ### Model-suggested contribution ideas
 
-- **README.md** — README.md
-  - Why: Provides instructions on how to run the example.
-  - Verification idea: The README.md file contains clear instructions and is present in the repository.
-- **pyproject.toml** — pyproject.toml
-  - Why: Contains metadata for the project, including the name, version, and dependencies, which is essential for project management.
-  - Verification idea: The pyproject.toml file is present and contains the expected metadata.
-- **src/taskboard/__init__.py** — src/taskboard/__init__.py
-  - Why: Defines the package structure and provides a docstring, which is important for documentation and understanding the project's purpose.
+- **README.md** — /home/runner/work/codebase-onboarding-agent/codebase-onboarding-agent/examples/toy-python-project/README.md
+  - Why: Provides instructions on how to run the project and install it in editable mode.
+  - Verification idea: The README.md file contains clear instructions and is present in the project.
+- **pyproject.toml** — /home/runner/work/codebase-onboarding-agent/codebase-onboarding-agent/examples/toy-python-project/pyproject.toml
+  - Why: Defines the project's build system and scripts, including the entry point `taskboard`.
+  - Verification idea: The pyproject.toml file is present and contains the necessary metadata for the project.
+- **src/taskboard/__init__.py** — /home/runner/work/codebase-onboarding-agent/codebase-onboarding-agent/examples/toy-python-project/src/taskboard/__init__.py
+  - Why: Provides a docstring for the project, indicating its purpose.
   - Verification idea: The __init__.py file is present and contains a docstring.
-- **src/taskboard/app.py** — src/taskboard/app.py
-  - Why: Contains the core logic for the task summary, which is essential for the application's functionality.
-  - Verification idea: The app.py file is present and contains the expected code.
-- **src/taskboard/cli.py** — src/taskboard/cli.py
-  - Why: Defines the command-line entry point, which is crucial for the application's functionality.
-  - Verification idea: The cli.py file is present and contains the expected code.
+- **src/taskboard/app.py** — /home/runner/work/codebase-onboarding-agent/codebase-onboarding-agent/examples/toy-python-project/src/taskboard/app.py
+  - Why: Contains the core logic for the task summary, using the `summarize_tasks` function.
+  - Verification idea: The app.py file is present and contains the `summarize_tasks` function.
 
 ## 2. Scope and repository map
 
@@ -93,7 +91,7 @@ Structural inventory map (not a verified runtime call graph):
 
 ### Model-generated architecture explanation
 
-The application is structured with a single package (`taskboard`) and a single script (`taskboard`). The project uses a `pyproject.toml` file for metadata and a `README.md` for documentation.
+The project is organized into a single package with a single script, `taskboard`, which is the entry point for the command-line application. The project uses the `taskboard` package for its scripts and the `pytest` package for optional tests.
 
 ### Important files
 

@@ -1,5 +1,5 @@
 Building a bounded, redacted source inventory before calling the configured model…
-Grounding checks removed 1 unsupported model claim(s).
+Grounding checks removed 3 unsupported model claim(s).
 Report written: /home/runner/work/codebase-onboarding-agent/codebase-onboarding-agent/examples/verification/toy-taskboard-ai-report.md
 Mode: AI-enhanced; files inspected: 6; skipped: 0
 Privacy note: selected redacted excerpts were sent to the configured model endpoint.
