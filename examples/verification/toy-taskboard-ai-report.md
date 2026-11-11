@@ -8,7 +8,7 @@
 
 ## 1. Thirty-second overview
 
-This repository contains a small command-line application called Tiny Taskboard, designed to demonstrate how the Codebase Onboarding Agent works.
+This repository is a small, command-line example project for the Codebase Onboarding Agent. It demonstrates the project's ability to ground explanations in files and includes a README, pyproject.toml, and two Python files.
 
 ## AI-assisted interpretation
 
@@ -16,51 +16,46 @@ This repository contains a small command-line application called Tiny Taskboard,
 
 ### Project interpretation
 
-This repository contains a small command-line application called Tiny Taskboard, designed to demonstrate how the Codebase Onboarding Agent works.
+This repository is a small, command-line example project for the Codebase Onboarding Agent. It demonstrates the project's ability to ground explanations in files and includes a README, pyproject.toml, and two Python files.
 
 ### Architecture summary
 
-The project is structured with a `src` directory containing the source code, and a `tests` directory for unit tests. The `pyproject.toml` file specifies the build backend and project metadata.
+The project is organized into a single package with a single script, `taskboard`, which is the entry point. The `src` directory contains the source code, and the `tests` directory contains test files.
 
 ### Execution walkthrough
 
-- Open a terminal in the `codebase-onboarding-agent/examples/toy-python-project` folder.
-- Run the command registered in `pyproject.toml`: `taskboard`.
-- Run the tests: `python -m pytest -q`.
+- Run the command registered in `pyproject.toml` by executing `taskboard`.
+- Run the tests by executing `python -m pytest -q`.
 
 ### Design observations
 
-- The project follows the `src` layout, which is common for Python projects.
-- The `pyproject.toml` file specifies the build backend and project metadata, ensuring the project is self-contained and easy to manage.
-
-### Model-reported unknowns
-
-- The project is intentionally small and does not use any third-party runtime dependencies.
+- The project is structured with a single package and script, demonstrating the project's ability to ground explanations in files.
+- The `src` directory contains the source code, and the `tests` directory contains test files, showcasing the project's approach to testing.
 
 ### Grounding checks
 
 The deterministic validator removed 2 model claim(s) that conflicted with the scanned evidence:
 
 - Removed one execution walkthrough item because it drops the quoting used by the documented optional-dependency install command.
-- Removed one model-suggested contribution because it attributes project metadata to src/taskboard/__init__.py, but no metadata/version declaration is visible in that file.
+- Removed one unknowns item because it claims source code is missing even though source files are present in the inventory.
 
 ### Model-suggested contribution ideas
 
-- **README.md** — README.md
-  - Why: Provides instructions on how to run the example project.
-  - Verification idea: The README.md file is present and contains the necessary instructions.
-- **pyproject.toml** — pyproject.toml
-  - Why: Specifies the build backend and project metadata, ensuring the project is self-contained and easy to manage.
-  - Verification idea: The pyproject.toml file is present and contains the necessary metadata.
-- **src/taskboard/app.py** — src/taskboard/app.py
-  - Why: Contains the core logic for the Tiny Taskboard demo, including the `summarize_tasks` function.
-  - Verification idea: The app.py file is present and contains the necessary logic.
-- **src/taskboard/cli.py** — src/taskboard/cli.py
-  - Why: Contains the command-line entry point for the Tiny Taskboard demo, including the `main` function.
-  - Verification idea: The cli.py file is present and contains the necessary entry point.
-- **tests/test_app.py** — tests/test_app.py
-  - Why: Contains unit tests for the Tiny Taskboard demo, including the `test_summary_counts_completed_tasks` and `test_summary_handles_no_tasks` functions.
-  - Verification idea: The test_app.py file is present and contains the necessary tests.
+- **README.md** — /home/runner/work/codebase-onboarding-agent/codebase-onboarding-agent/examples/toy-python-project/README.md
+  - Why: Provides instructions on how to run the project and install it in editable mode.
+  - Verification idea: The README.md file contains clear instructions and is present in the project.
+- **pyproject.toml** — /home/runner/work/codebase-onboarding-agent/codebase-onboarding-agent/examples/toy-python-project/pyproject.toml
+  - Why: Specifies the project's build system, dependencies, and scripts, including the entry point `taskboard`.
+  - Verification idea: The pyproject.toml file is present and contains the necessary metadata for the project.
+- **src/taskboard/__init__.py** — /home/runner/work/codebase-onboarding-agent/codebase-onboarding-agent/examples/toy-python-project/src/taskboard/__init__.py
+  - Why: Defines the package and provides a brief description.
+  - Verification idea: The __init__.py file is present and contains the package definition.
+- **src/taskboard/app.py** — /home/runner/work/codebase-onboarding-agent/codebase-onboarding-agent/examples/toy-python-project/src/taskboard/app.py
+  - Why: Contains the core logic for summarizing tasks, including the `summarize_tasks` function.
+  - Verification idea: The app.py file is present and contains the summary logic.
+- **src/taskboard/cli.py** — /home/runner/work/codebase-onboarding-agent/codebase-onboarding-agent/examples/toy-python-project/src/taskboard/cli.py
+  - Why: Defines the command-line entry point for the project, with a `main` function that prints the summary.
+  - Verification idea: The cli.py file is present and contains the entry point function.
 
 ## 2. Scope and repository map
 
@@ -94,7 +89,7 @@ Structural inventory map (not a verified runtime call graph):
 
 ### Model-generated architecture explanation
 
-The project is structured with a `src` directory containing the source code, and a `tests` directory for unit tests. The `pyproject.toml` file specifies the build backend and project metadata.
+The project is organized into a single package with a single script, `taskboard`, which is the entry point. The `src` directory contains the source code, and the `tests` directory contains test files.
 
 ### Important files
 

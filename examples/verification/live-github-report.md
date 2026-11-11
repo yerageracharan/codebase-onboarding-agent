@@ -2,7 +2,7 @@
 
 **Source:** https://github.com/yerageracharan/codebase-onboarding-agent (downloaded ZIP; branch/revision not pinned)  
 **Mode:** static-only  
-**Readable files inspected:** 51  
+**Readable files inspected:** 61  
 **Paths skipped:** 34  
 **Safety:** the analyzer did not execute repository source files, install scripts, or target tests.
 
@@ -16,7 +16,7 @@ Static-only mode does not guess the product purpose from the repository name.
 ## 2. Scope and repository map
 
 - Source: https://github.com/yerageracharan/codebase-onboarding-agent (downloaded ZIP; branch/revision not pinned)
-- Included files: 51
+- Included files: 61
 - Skipped paths: 34
 - A GitHub URL is downloaded as a ZIP archive; this version does not pin a branch or commit.
 - Commands listed below are evidence found in source files, not commands executed by this analyzer.
@@ -24,10 +24,20 @@ Static-only mode does not guess the product purpose from the repository name.
 ### Readable file tree
 
     Repository root
+      └── .editorconfig
+      └── .github/ISSUE_TEMPLATE/bug_report.yml
+      └── .github/ISSUE_TEMPLATE/config.yml
+      └── .github/ISSUE_TEMPLATE/feature_request.yml
+      └── .github/dependabot.yml
+      └── .github/pull_request_template.md
       └── .github/workflows/tests.yml
       └── .github/workflows/verification-demo.yml
       └── .gitignore
+      └── AGENTS.md
+      └── CODE_OF_CONDUCT.md
+      └── CONTRIBUTING.md
       └── README.md
+      └── SECURITY.md
       └── SKILL.md
       └── agents/openai.yaml
       └── docs/README.md
@@ -223,6 +233,9 @@ Manifest entries prove that a dependency is declared, not that the analyzer conf
 
 The following command references were found in inspected documentation or common configuration files. They were not executed.
 
+- CONTRIBUTING.md:20: python -m pip install --upgrade pip
+- CONTRIBUTING.md:21: python -m pip install -e ".[test]"
+- CONTRIBUTING.md:27: python -m pytest -q
 - README.md:54: python -m pip install -e ".[test]"
 - README.md:259: python -m pip install -e ".[test]"
 - README.md:260: python -m pytest -q
