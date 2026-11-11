@@ -59,3 +59,11 @@ def test_open_repository_rejects_non_directory(tmp_path: Path) -> None:
     with pytest.raises(RepositoryError, match="not a directory"):
         with open_repository(str(file)):
             pass
+
+
+def test_parse_github_url_rejects_malformed_authorities_without_raising() -> None:
+    assert parse_github_url("https://github.com:abc/owner/repo") is None
+    assert parse_github_url("https://github.com:99999/owner/repo") is None
+    assert parse_github_url("https://[github.com/owner/repo") is None
+    assert parse_github_url(None) is None
+    assert parse_github_url("") is None

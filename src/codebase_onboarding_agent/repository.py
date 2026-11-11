@@ -24,11 +24,23 @@ class RepositoryError(ValueError):
 
 
 def parse_github_url(source: str) -> tuple[str, str] | None:
-    """Parse a narrowly supported public GitHub repository URL."""
-    parsed = urllib.parse.urlparse(source.strip())
-    if parsed.scheme != "https" or parsed.hostname != "github.com":
+    """Parse a narrowly supported public GitHub repository URL.
+
+    Malformed authority syntax (for example, an unmatched IPv6 bracket or
+    non-numeric port) is treated as an unsupported URL, not leaked as a
+    ValueError to callers.
+    """
+    if not isinstance(source, str) or not source.strip():
         return None
-    if parsed.port not in (None, 443) or parsed.username or parsed.password:
+    try:
+        parsed = urllib.parse.urlparse(source.strip())
+        hostname = parsed.hostname
+        port = parsed.port
+    except ValueError:
+        return None
+    if parsed.scheme != "https" or hostname != "github.com":
+        return None
+    if port not in (None, 443) or parsed.username or parsed.password:
         return None
     if parsed.query or parsed.fragment:
         return None
@@ -39,7 +51,6 @@ def parse_github_url(source: str) -> tuple[str, str] | None:
     if owner in {".", ".."} or repo in {".", ".."}:
         return None
     return owner, repo.removesuffix(".git")
-
 
 def _read_limited(response, limit: int) -> bytes:
     chunks: list[bytes] = []
